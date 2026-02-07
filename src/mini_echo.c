@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:59:15 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/06 17:41:23 by akkim            ###   ########.fr       */
+/*   Updated: 2026/02/07 15:06:32 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,13 @@
 // - 환경변수가 필요함 
 // - 종료코드를 위한 구조체
 
-static char	**find_env(char *str, char **envp)
-{
-	int		i;
-	char	**paths;
-
-	i = 1;
-	while (ft_strcmp(envp[i], str) != 0)
-		i++;
-	// "\n"찾아서 끊기
-	return (paths);
-}
-
 // 추후, env & 종료코드 & flag를 담은 구조체를 만들어 넘기는 걸 추천함
-void mini_echo(char *str, char **env, int flag)
+// 입력은 어떻게? - echo $USER
+// $USER는 자동으로 akkim으로 변환되어서 들어와짐 -> 즉 반영안해도 됨
+
+// char **env
+void mini_echo(char *str, t_env *env)
 {
-	if (ft_strncmp(str, "$", 1))
-	{
-		// 다음 $까지 생각해봐야함
-		find_env(str,)
-	}
+	(void)env;
+	ft_printf("%s", str);
 }

@@ -6,17 +6,23 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:28:09 by akkim             #+#    #+#             */
-/*   Updated: 2026/01/19 18:09:22 by akkim            ###   ########.fr       */
+/*   Updated: 2026/02/07 15:04:09 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHLL_H
-# define MINISHLL_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-#include "libft.h"
-#include "ft_printf_bonus.h"
+# include "libft.h"
+# include "ft_printf_bonus.h"
 
+typedef struct l_env
+{
+	char	**path;
+	char	*user;
+	int		exit_code;
+}	t_env;
 
-void mini_echo(char *str);
+void mini_echo(char *str, t_env *env);
 
 #endif
