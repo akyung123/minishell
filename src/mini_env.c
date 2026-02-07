@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   mini_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/07 15:02:03 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/07 19:05:27 by akkim            ###   ########.fr       */
+/*   Created: 2026/02/07 18:59:32 by akkim             #+#    #+#             */
+/*   Updated: 2026/02/07 19:12:31 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+// 그냥 envp 출력시키면 되려나
 
-
-int	main(int argc, char **argv, char **envp)
+void	mini_env(t_info_env *env)
 {
-	t_info_env	env;
+	int		i;
+	t_env	*e;
 
-	(void)argc;
-	(void)argv;
-	init_env(&env, envp);
-	mini_env(&env);
-	// ft_printf("%s\n", get_env_val(env.head, "USER")); // test
+	i = 0;
+	e = env->head;
+	while (e->next)
+	{
+		ft_printf("%s=%s\n", e->key, e->value);
+		e = e->next;
+	}
+	ft_printf("_=/usr/bin/env\n");
 }
