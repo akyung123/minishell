@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 17:26:48 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/07 18:31:31 by akkim            ###   ########.fr       */
+/*   Updated: 2026/02/07 18:40:20 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ char	*get_env_val(t_env *head, char *key)
 		return (node->value);
 	return (NULL);
 }
-
 
 // 환경변수 추가
 
