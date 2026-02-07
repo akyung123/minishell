@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 17:26:48 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/07 18:24:41 by akkim            ###   ########.fr       */
+/*   Updated: 2026/02/07 18:31:31 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,29 @@ void	init_env(t_info_env *env, char **envp)
 }
 
 // key로 노드 찾기
+t_env	*find_env_node(t_env *head, char *key)
+{
+	while (head)
+	{
+		if (ft_strlen(head->key) == ft_strlen(key) && \
+			ft_strncmp(head->key, key, ft_strlen(key)) == 0)
+			return (head);
+		head = head->next;
+	}
+	return (NULL);
+}
 
 // 값 가져오기
+char	*get_env_val(t_env *head, char *key)
+{
+	t_env	*node;
+
+	node = find_env_node(head, key);
+	if (node)
+		return (node->value);
+	return (NULL);
+}
+
 
 // 환경변수 추가
 

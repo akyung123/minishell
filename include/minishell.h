@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:28:09 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/07 18:23:14 by akkim            ###   ########.fr       */
+/*   Updated: 2026/02/07 18:31:41 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@ typedef struct l_info_env
 }		t_info_env;
 
 void	init_env(t_info_env *env, char **envp);
+char	*get_env_val(t_env *head, char *key);
 
 #endif
