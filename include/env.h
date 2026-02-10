@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   env.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/07 15:02:03 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/10 16:08:13 by akkim            ###   ########.fr       */
+/*   Created: 2026/01/19 16:28:09 by akkim             #+#    #+#             */
+/*   Updated: 2026/02/07 19:47:59 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef ENV_H
+# define ENV_H
 
+# include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
-{
-	t_info_env	env;
+t_env	*new_env_node(char *key, char *value);
+void	env_add_back(t_env **head, t_env *new);
+void	init_env(t_info_env *env, char **envp);
+t_env	*find_env_node(t_env *head, char *key);
+char	*get_env_val(t_env *head, char *key);
 
-	(void)argc;
-	(void)argv;
-	init_env(&env, envp);
-	mini_export(&env, "_ak=user");
-	ft_printf("%s\n", get_env_val(env.head, "_ak"));
-	// ft_printf("%s\n", get_env_val(env.head, "USER"), ); // test
-}
+#endif

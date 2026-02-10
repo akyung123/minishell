@@ -3,7 +3,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 INCLUDE = -I./include -I./libft
 
-SRCS = $(wildcard src/*.c)
+SRCS =  $(wildcard src/*.c src/*/*.c)
 OBJS = $(SRCS:.c=.o)
 
 LIBFT_DIR = ./libft
