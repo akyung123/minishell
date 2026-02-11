@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:28:09 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/10 20:05:16 by akkim            ###   ########.fr       */
+/*   Updated: 2026/02/11 16:56:49 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ void	mini_pwd(t_info_env *env);
 void	mini_env(t_info_env *env);
 void	mini_export(t_info_env *env, char *str);
 void	mini_unset(t_info_env *env, char *key);
+void	mini_cd(t_info_env *env, char *path);
 
 #endif
