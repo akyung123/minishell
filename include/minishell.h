@@ -40,6 +40,7 @@ void	mini_export(t_info_env *env, char *str);
 void	mini_unset(t_info_env *env, char *key);
 void	mini_cd(t_info_env *env, char *path);
 void	mini_exit(t_info_env *env, char **code);
+void	mini_echo(t_info_env *env ,char **str);
 
 
 #endif

@@ -27,6 +27,8 @@ void	builin_handler(t_info_env *env, t_simple_command *simple_command)
 		mini_pwd(env);
 	if (ft_strcmp(simple_command->cmd, "env") == 0)
 		mini_env(env);
+	if (ft_strcmp(simple_command->cmd, "echo") == 0)
+		mini_echo(env, simple_command->args);
 	if (ft_strcmp(simple_command->cmd, "export") == 0)
 		mini_export(env, simple_command->args[1]);
 	if (ft_strcmp(simple_command->cmd, "unset") == 0)

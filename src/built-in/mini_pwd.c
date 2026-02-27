@@ -25,6 +25,6 @@ void	mini_pwd(t_info_env *env)
 		perror("pwd");
 		env->exit_code = 1;
 	}
-	ft_printf("%s", path);
+	ft_printf("%s\n", path);
 	free(path);
 }
