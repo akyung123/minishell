@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 18:00:44 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/28 00:01:03 by akkim            ###   ########.fr       */
+/*   Updated: 2026/02/28 00:01:10 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct l_command_line
 
 char	*ft_strrchr(const char *str, int ch);
 char	*ft_strstr(const char *haystack, const char *needle);
-"나 '에 대해서 검사
+
 void	builin_handler(t_info_env *env, t_simple_command *simple_command);
 t_command_line	*passing_command_line(char *line);
 
