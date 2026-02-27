@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 18:32:27 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/27 15:25:51 by akkim            ###   ########.fr       */
+/*   Updated: 2026/02/27 23:59:12 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,50 +28,6 @@
 	// pipeline으로 쪼개야함
 	// command_line 분리가 잘 되는지 확인할 것
 
-char	*ft_strstr(const char *haystack, const char *needle)
-{
-	int	h;
-	int	n;
-
-	if (needle[0] == '\0')
-		return ((char *)haystack);
-	h = 0;
-	while (haystack[h] != '\0')
-	{
-		n = 0;
-		while (haystack[h + n] == needle[n] && haystack[h + n] != '\0')
-		{
-			n++;
-			if (needle[n] == '\0')
-				return ((char *)&haystack[h]);
-		}
-		h++;
-	}
-	return (0);
-}
-
-char	*ft_strrchr(const char *str, int ch)
-{
-	char	*last;
-	int		i;
-
-	last = 0;
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == (unsigned char)ch)
-		{
-			last = (char *)&str[i];
-		}
-		i++;
-	}
-	if ((unsigned char)ch == '\0')
-	{
-		return ((char *)&str[i]);
-	}
-	return (last);
-}
-
 char	*find_next_operator(char *line)
 {
 	char	*and_ptr;
@@ -89,9 +45,129 @@ char	*find_next_operator(char *line)
 		return (and_ptr);
 	return (or_ptr);
 }
-t_simple_command	*parsing_simple_command()
+t_redirect	*extract_redirections(char *line, char **clean_line)
 {
+	t_redirect	*head;
+	char		*tmp;
+	int			i;
 
+	head = 0;
+	tmp = ft_strdup(line);
+	i = 0;
+	while (tmp && tmp[i])
+	{
+		if (tmp[i] == '>' || tmp[i] == '<')
+		{
+			add_redir_node(&head, &tmp[i]);
+			mask_redirection_part(tmp, i);
+		}
+		i++;
+	}
+	*clean_line = tmp;
+	return (head);
+}
+// redirect 찾기
+int	is_redir(char *token)
+{
+	// 토큰이 4가지 기호 중 하나와 완벽히 일치하면 1(true) 반환
+	if (ft_strcmp(token, ">") == 0 || ft_strcmp(token, "<") == 0 ||
+		ft_strcmp(token, ">>") == 0 || ft_strcmp(token, "<<") == 0)
+	{
+		return (1);
+	}
+	return (0);
+}
+
+// 공백을 추가한 문자열의 길이 함수
+int	get_padded_len(char *line)
+{
+	// 리다이렌션 기호이면 다음 문자가 ' '인지 검사하고
+	// 공백이 아니면 ' '를 추가하여 길이를 잼
+}
+// 공백 추가 함수
+char	*add_space_around_redir(char *line)
+{
+	char	*res;
+
+	// padding할 문자열 길이 재기
+	retrun (res)
+}
+
+// 공백기준으로 쪼개는 함수
+// but, ft_split과 다르게 "" 안의 공백은 무시해야함
+char	**split_quotes()
+{
+	
+}
+
+// 토큰화 함수
+char	**tokenize_line(char *line)
+{
+	char	*padded_line;
+	char	**tokens;
+
+	// 공백 띄우기 함수
+	padded_line = add_space_around_redir(line);
+	if (!padded_line)
+		return (NULL);
+	tokens = split_quotes();
+	free(padded_line);
+	return (tokens);
+}
+// 문법 체크 함수
+int check_syntax(char **tokens)
+{
+	int	i;
+
+	i = 0;
+	if (!tokens[0])
+		retrun (0);
+	while (tokens[i])
+	{
+		if (is_redir(tokens[i]))
+		{
+			if (tokens[i + 1] == NULL) // 파일명 x
+				return (0);
+			else if (is_redir(tokens[i + 1])) // 기호 뒤에 기호
+				return (0);
+			i += 2;
+		}
+		else
+			i++;
+	}
+	return (1);
+}
+
+// 구조체에 데이터 채우기
+t_simple_command	*build_cmd_struct(char **tokens)
+{
+	
+}
+
+// ' '를 추가 후, 토큰화 -> 문법 검사 필요!
+// <simple_command> ::= <cmd_name> <arguments_opt> <redirects_opt>
+t_simple_command	*parsing_simple_command(char *line)
+{
+	t_simple_command	*simple_command;
+	char				*tmp;
+	char				**tokens;
+
+	if (!line)
+		return (NULL);
+	simple_command = malloc(siezeof(simple_command));
+	if (!simple_command)
+		return (NULL);
+	// 내부에서 add_space_around_redir 후 ft_split 실행
+	tokens = tokenize_line(line);
+	// 문법 검사
+	if (!check_syntax(tokens))
+	{
+		free_tokens(tokens);
+		return (NULL);
+	}
+	// 구조체에 데이터 채우가
+	simple_command = build_cmd_struct(tokens);
+	return (simple_command);
 }
 
 // p_op : pipe operator
@@ -111,10 +187,15 @@ t_pipeline	*parsing_pipeline(char *line)
 	if (p_op != NULL)
 	{
 		tmp = ft_substr(line, 0, p_op - line);
-		pipeline->next = parsing_command_line(ft_substr(line, 0, p_op - line));
+		pipeline->next = parsing_pipeline(tmp);
 		free(tmp);
-		pipeline->simple_command- parsing_simple()
+		tmp = ft_strdup(p_op + 1);
+		pipeline->simple_command = parsing_simple_command(tmp);
+		free(tmp);
 	}
+	else
+		pipeline->simple_command = parsing_simple_command(line);
+	return (pipeline);
 }
 
 t_command_line	*parsing_command_line(char *line)
