@@ -21,7 +21,7 @@ $(LIBFT):
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(INCLUDE) $(OBJS) $(LIBS) -o $(NAME)
+	$(CC) $(CFLAGS) $(INCLUDE) $(OBJS) $(LIBS) -lreadline -o $(NAME)
 
 .PHONY: clean
 clean:

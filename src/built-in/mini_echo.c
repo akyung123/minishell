@@ -26,8 +26,35 @@
 // $USER는 자동으로 akkim으로 변환되어서 들어와짐 -> 즉 반영안해도 됨
 
 // char **env
-void mini_echo(char *str, t_env *env)
+void mini_echo(t_info_env *env, char **str)
 {
-	(void)env;
-	ft_printf("%s", str);
+    int j;
+    int k;
+    int n_flag;
+
+    (void)env;
+    j = 1;
+	n_flag = 0;
+    while (str[j] && str[j][0] == '-' && str[j][1] == 'n')
+    {
+        k = 1;
+        while (str[j][k] == 'n')
+            k++;
+        if (str[j][k] == '\0')
+        {
+            n_flag = 1;
+            j++;
+        }
+        else
+            break;
+    }
+    while (str[j])
+    {
+        ft_printf("%s", str[j]);
+        if (str[j + 1])
+            ft_printf(" ");
+        j++;
+    }
+    if (n_flag == 0)
+        ft_printf("\n");
 }

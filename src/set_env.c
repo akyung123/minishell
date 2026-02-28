@@ -64,7 +64,7 @@ void	init_env(t_info_env *env, char **envp)
 		eq = ft_strchr(envp[i], '=');
 		if (eq)
 		{
-			key = ft_substr(envp[i], 0, eq - envp[i]);
+			key = ft_substr(envp[i], 0, (size_t)(eq - envp[i]));
 			value = ft_strdup(eq + 1);
 			env_add_back(&env->head, new_env_node(key, value));
 			free(key);
