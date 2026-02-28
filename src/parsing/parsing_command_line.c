@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:19 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/28 13:22:07 by akkim            ###   ########.fr       */
+/*   Updated: 2026/02/28 21:05:37 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,47 +27,67 @@
 	// 다시 parsing command하기
 	// pipeline으로 쪼개야함
 	// command_line 분리가 잘 되는지 확인할 것
-	
-	// t_redirect	*extract_redirections(char *line, char **clean_line)
-	// {
-	// 	t_redirect	*head;
-	// 	char		*tmp;
-	// 	int			i;
-	
-	// 	head = 0;
-	// 	tmp = ft_strdup(line);
-	// 	i = 0;
-	// 	while (tmp && tmp[i])
-	// 	{
-	// 		if (tmp[i] == '>' || tmp[i] == '<')
-	// 		{
-	// 			add_redir_node(&head, &tmp[i]);
-	// 			mask_redirection_part(tmp, i);
-	// 		}
-	// 		i++;
-	// 	}
-	// 	*clean_line = tmp;
-	// 	return (head);
-	// }
 
+// 검사 함수
+int	flag_q(char c)
+{
+	if (c == '\'')
+		return (1);
+	else if (c == '\"')
+		return (2);
+	return (0);
+}
+
+// 현재 따옴표의 끝(닫히는 곳) 인덱스를 찾아서 반환하는 함수
+int	skip_quotes(char *line, int i)
+{
+	int	q;
+
+	q = flag_q(line[i]);
+	i++;
+	while (line[i] && flag_q(line[i]) != q)
+		i++;
+	return (i);
+}
+
+// 현재 인덱스가 && 또는 || 인지 확인하는 함수
+int	is_logical_operator(char *line, int i)
+{
+	if (line[i] == '&' && line[i + 1] == '&')
+		return (1);
+	if (line[i] == '|' && line[i + 1] == '|')
+		return (1);
+	return (0);
+}
+
+// 따옴표를 기준으로 해야함. 
+// 따옴표 밖일 때만 연산자 검사를 진행하기
+// flag 저장해서 구분
+// 1 : '\'' 2: '\"'
+// 0 : 없음
 char	*find_next_operator(char *line)
 {
 	char	*and_ptr;
 	char	*or_ptr;
+	int		flag;
+	int		i;
 
-	and_ptr = ft_strstr(line, "&&");
-	or_ptr = ft_strstr(line, "||");
-	if (and_ptr != 0 && or_ptr != 0)
+	i = 0;
+	while (line[i])
 	{
-		if (and_ptr < or_ptr)
-			return (and_ptr);
-		return (or_ptr);
+		if (flag_q(line[i]))
+			i = skip_quotes(line, i);
+		else if (is_logical_operator(line, i))
+			return (&line[i]);
+		if (line[i])
+			i++;
 	}
-	if (and_ptr != 0)
-		return (and_ptr);
-	return (or_ptr);
+	return (NULL);
 }
 
+// 따옴표 검사
+// 1. 따옴표가 닫혀있는지 검사하고 재입력을 받아서 line을 완성시키기
+// 2. 따옴표를 기준으로 분할
 t_command_line	*parsing_command_line(char *line)
 {
 	t_command_line	*command_line;
