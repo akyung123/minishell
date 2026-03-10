@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:19 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/28 21:05:37 by akkim            ###   ########.fr       */
+/*   Updated: 2026/03/10 17:08:49 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,12 @@ char	*find_next_operator(char *line)
 	return (NULL);
 }
 
-// 따옴표 검사
+
 // 1. 따옴표가 닫혀있는지 검사하고 재입력을 받아서 line을 완성시키기
 // 2. 따옴표를 기준으로 분할
+// 따옴표는 하나를 만다면 flag 세워서 구분하고
+// flag에 따라서 어떤 함수를 만날지 정하자
+// 이때, get_next_line처럼 함수 짜면 좋을 듯
 t_command_line	*parsing_command_line(char *line)
 {
 	t_command_line	*command_line;
