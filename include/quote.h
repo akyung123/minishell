@@ -6,12 +6,14 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 15:35:12 by akkim             #+#    #+#             */
-/*   Updated: 2026/03/10 15:36:06 by akkim            ###   ########.fr       */
+/*   Updated: 2026/03/16 15:56:47 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef QUOTE_H
 # define QUOTE_H
 
+# include "minishell.h"
+# include "parsing.h"
 
 #endif
