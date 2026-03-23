@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:19 by akkim             #+#    #+#             */
-/*   Updated: 2026/03/10 17:08:49 by akkim            ###   ########.fr       */
+/*   Updated: 2026/03/23 16:49:19 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,16 @@ int	flag_q(char c)
 }
 
 // 현재 따옴표의 끝(닫히는 곳) 인덱스를 찾아서 반환하는 함수
-int	skip_quotes(char *line, int i)
-{
-	int	q;
+// int	skip_quote(char *line, int i)
+// {
+// 	int	q;
 
-	q = flag_q(line[i]);
-	i++;
-	while (line[i] && flag_q(line[i]) != q)
-		i++;
-	return (i);
-}
+// 	q = flag_q(line[i]);
+// 	i++;
+// 	while (line[i] && flag_q(line[i]) != q)
+// 		i++;
+// 	return (i);
+// }
 
 // 현재 인덱스가 && 또는 || 인지 확인하는 함수
 int	is_logical_operator(char *line, int i)
@@ -60,42 +60,27 @@ int	is_logical_operator(char *line, int i)
 	return (0);
 }
 
-// 따옴표를 기준으로 해야함. 
-// 따옴표 밖일 때만 연산자 검사를 진행하기
-// flag 저장해서 구분
-// 1 : '\'' 2: '\"'
-// 0 : 없음
+// find comm operator
 char	*find_next_operator(char *line)
 {
-	char	*and_ptr;
-	char	*or_ptr;
-	int		flag;
 	int		i;
 
 	i = 0;
 	while (line[i])
 	{
-		if (flag_q(line[i]))
-			i = skip_quotes(line, i);
-		else if (is_logical_operator(line, i))
+		if (is_logical_operator(line, i))
 			return (&line[i]);
-		if (line[i])
+		else if (line[i])
 			i++;
 	}
 	return (NULL);
 }
 
-
-// 1. 따옴표가 닫혀있는지 검사하고 재입력을 받아서 line을 완성시키기
-// 2. 따옴표를 기준으로 분할
-// 따옴표는 하나를 만다면 flag 세워서 구분하고
-// flag에 따라서 어떤 함수를 만날지 정하자
-// 이때, get_next_line처럼 함수 짜면 좋을 듯
-t_command_line	*parsing_command_line(char *line)
+t_command_line	*parsing_command_line(char **line)
 {
 	t_command_line	*command_line;
-	char			*comm;
 	char			*tmp;
+	char			*comm;
 
 	if (!line)
 		return (NULL);
@@ -104,18 +89,19 @@ t_command_line	*parsing_command_line(char *line)
 		return (NULL);
 	command_line->next = 0;
 	command_line->comm_oper = 0;
-	comm = find_next_operator(line);
+	// quotue chk function
+	comm = find_next_operator(*line);
 	if (comm != 0)
 	{
 		command_line->comm_oper = comm[0];
-		tmp = ft_substr(line, 0, comm - line);
+		tmp = ft_substr(*line, 0, comm - (*line));
 		command_line->pipeline = parsing_pipeline(tmp);
 		free(tmp);
 		tmp = ft_strdup(comm + 2);
-		command_line->next = parsing_command_line(tmp);
+		command_line->next = parsing_command_line(&tmp);
 		free(tmp);
 	}
 	else
-		command_line->pipeline = parsing_pipeline(ft_strdup(line));
+		command_line->pipeline = parsing_pipeline(ft_strdup(*line));
 	return (command_line);
 }

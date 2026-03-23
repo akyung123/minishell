@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 15:27:34 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/27 15:28:15 by akkim            ###   ########.fr       */
+/*   Updated: 2026/03/19 17:56:00 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*ft_strstr(const char *haystack, const char *needle)
 	return (0);
 }
 
-char	*ft_strrchr(const char *str, int ch)
+char	*minishell_strrchr(const char *str, int ch)
 {
 	char	*last;
 	int		i;

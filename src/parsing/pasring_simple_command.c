@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:11 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/28 14:03:18 by akkim            ###   ########.fr       */
+/*   Updated: 2026/03/21 23:55:53 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,17 @@
 
 void	free_tokens(char **tokens)
 {
-	
+	int	i;
+
+	if (!tokens)
+		return ;
+	i = 0;
+	while (tokens[i])
+	{
+		free(tokens[i]);
+		i++;
+	}
+	free(tokens);
 }
 
 // redirect 찾기
@@ -26,23 +36,23 @@ int	is_redir(char *token)
 	return (0);
 }
 
-
 // 문법 체크 함수
 // 파일명 x && 기호 뒤에 기호 오는 경우
+// $는 변경하고 `(백틱)은 실행시켜야함
 int	check_syntax(char **tokens)
 {
 	int	i;
 
 	i = 0;
 	if (!tokens[0])
-		retrun (0);
+		return (0);
 	while (tokens[i])
 	{
 		if (is_redir(tokens[i]))
 		{
-			if (tokens[i + 1] == NULL) // 파일명 x
+			if (tokens[i + 1] == NULL)
 				return (0);
-			else if (is_redir(tokens[i + 1])) // 기호 뒤에 기호
+			else if (is_redir(tokens[i + 1]))
 				return (0);
 			i += 2;
 		}
@@ -52,12 +62,85 @@ int	check_syntax(char **tokens)
 	return (1);
 }
 
-// 구조체에 데이터 채우기
+// 리다이렉션 노드를 생성하고 연결하는 함수 (예시)
+static void	add_redir_node(t_redirect **list, char *type, char *file)
+{
+	t_redirect	*new;
+	t_redirect	*tmp;
+
+	new = malloc(sizeof(t_redirect));
+	if (!new)
+		return ;
+	new->type = ft_strdup(type);
+	new->filename = ft_strdup(file);
+	new->next = NULL;
+	if (!*list)
+		*list = new;
+	else
+	{
+		tmp = *list;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
+}
+
+static int	count_args(char **tokens)
+{
+	int	i;
+	int	count;
+
+	if (!tokens)
+		return (0);
+	i = 0;
+	count = 0;
+	while (tokens[i])
+	{
+		if (is_redir(tokens[i]))
+		{
+			if (tokens[i + 1])
+				i += 2;
+			else
+				i++;
+		}
+		else
+		{
+			count++;
+			i++;
+		}
+	}
+	return (count);
+}
+
 t_simple_command	*build_cmd_struct(char **tokens)
 {
-	t_simple_command	*simple_command;
+	t_simple_command	*cmd;
+	int					i;
+	int					j;
 
-	return (simple_command);
+	cmd = ft_calloc(1, sizeof(t_simple_command));
+	if (!cmd)
+		return (NULL);
+	cmd->args = malloc(sizeof(char *) * (count_args(tokens) + 1));
+	i = 0;
+	j = 0;
+	while (tokens[i])
+	{
+		if (is_redir(tokens[i]))
+		{
+			if (j == 0)
+				add_redir_node(&(cmd->pre_red), tokens[i], tokens[i + 1]);
+			else
+				add_redir_node(&(cmd->suff_red), tokens[i], tokens[i + 1]);
+			i += 2;
+		}
+		else
+			cmd->args[j++] = ft_strdup(tokens[i++]);
+	}
+	cmd->args[j] = NULL;
+	if (j > 0)
+		cmd->cmd = ft_strdup(cmd->args[0]);
+	return (cmd);
 }
 
 // ' '를 추가 후, 토큰화 -> 문법 검사 필요!
@@ -65,12 +148,11 @@ t_simple_command	*build_cmd_struct(char **tokens)
 t_simple_command	*parsing_simple_command(char *line)
 {
 	t_simple_command	*simple_command;
-	char				*tmp;
 	char				**tokens;
 
 	if (!line)
 		return (NULL);
-	simple_command = malloc(siezeof(simple_command));
+	simple_command = malloc(sizeof(simple_command));
 	if (!simple_command)
 		return (NULL);
 	tokens = tokenize_line(line);

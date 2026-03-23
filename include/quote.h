@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 15:35:12 by akkim             #+#    #+#             */
-/*   Updated: 2026/03/16 15:56:47 by akkim            ###   ########.fr       */
+/*   Updated: 2026/03/20 19:56:31 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,8 @@
 
 # include "minishell.h"
 # include "parsing.h"
+
+int	chk_quote(char q);
+int	skip_quote(char **line, int start_i, char type);
 
 #endif
