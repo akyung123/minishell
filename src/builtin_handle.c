@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 17:38:13 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/20 19:48:02 by akkim            ###   ########.fr       */
+/*   Updated: 2026/03/23 18:10:45 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 // 추가적으로 이곳에서 args가 필요 이상으로 많이 들어온 경우를 처리하도록 함
 
-#include "passing.h"
+#include "parsing.h"
 #include "minishell.h"
 
 void	builin_handler(t_info_env *env, t_simple_command *simple_command)
