@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 16:23:46 by akkim             #+#    #+#             */
-/*   Updated: 2026/03/23 17:50:53 by akkim            ###   ########.fr       */
+/*   Updated: 2026/03/23 19:47:35 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void	test_pipeline(t_pipeline *pipeline)
 	if (!pipeline)
 		return ;
 	printf(">> pipe_line <<\n");
-	test_simple_command(pipeline->simple_command);
 	test_pipeline(pipeline->next);
+	test_simple_command(pipeline->simple_command);
 }
 
 // command_line test function
