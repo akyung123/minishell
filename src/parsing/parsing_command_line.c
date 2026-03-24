@@ -6,49 +6,13 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:19 by akkim             #+#    #+#             */
-/*   Updated: 2026/03/23 16:49:19 by akkim            ###   ########.fr       */
+/*   Updated: 2026/03/24 17:03:42 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "quote.h"
 #include "parsing.h"
 #include "minishell.h"
-/*
-	parsing 구조 정리
-	1. "" 나 ''에 맞춰서 검사한다.
-		- 끝나지 않으면 "dquote>" 출력하여 readline으로 받아서 합쳐야함
-	2. 받은 전체를 command_line 구조체로 분리한다. && 와 || 를 확인하고 분리해야함
-	3. 
-*/
-
-	// "", '' 검사 함수
-	// "" or ''가 있고 끝나는 지 검사하기
-	// 닫히지 않았으면 "dquote>" 출력하여 readline으로 받아서 합치기
-	// && 나 ||가 있으면 기준으로 command line이 분리하기
-	// 다시 parsing command하기
-	// pipeline으로 쪼개야함
-	// command_line 분리가 잘 되는지 확인할 것
-
-// 검사 함수
-int	flag_q(char c)
-{
-	if (c == '\'')
-		return (1);
-	else if (c == '\"')
-		return (2);
-	return (0);
-}
-
-// 현재 따옴표의 끝(닫히는 곳) 인덱스를 찾아서 반환하는 함수
-// int	skip_quote(char *line, int i)
-// {
-// 	int	q;
-
-// 	q = flag_q(line[i]);
-// 	i++;
-// 	while (line[i] && flag_q(line[i]) != q)
-// 		i++;
-// 	return (i);
-// }
 
 // 현재 인덱스가 && 또는 || 인지 확인하는 함수
 int	is_logical_operator(char *line, int i)
@@ -89,7 +53,7 @@ t_command_line	*parsing_command_line(char **line)
 		return (NULL);
 	command_line->next = 0;
 	command_line->comm_oper = 0;
-	// quotue chk function
+	check_quote(line);
 	comm = find_next_operator(*line);
 	if (comm != 0)
 	{

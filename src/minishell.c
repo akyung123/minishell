@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 15:02:03 by akkim             #+#    #+#             */
-/*   Updated: 2026/03/23 19:55:50 by akkim            ###   ########.fr       */
+/*   Updated: 2026/03/24 18:46:33 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ int	main(int argc, char **argv, char **envp)
 	{
 		line = readline("minishell: ");
 		command_line = parsing_command_line(&line);
-		test_command_line(command_line);
+		// test_command_line(command_line);
 	}
 	all_free_env(env.head);
 }
+
 /*
 // 테스트 실행 함수
 void	run_parsing_tests(void)

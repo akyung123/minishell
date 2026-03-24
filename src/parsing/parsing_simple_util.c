@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 13:01:33 by akkim             #+#    #+#             */
-/*   Updated: 2026/03/23 02:05:22 by akkim            ###   ########.fr       */
+/*   Updated: 2026/03/24 15:47:09 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,16 @@
 // <이면 <나 ' '이 이하 동일
 // 따옴표도 확인해야함
 
-// // 비트 마스크로 state update
-void	update_quote_state(char c, int *state)
+int	chk_quote(char q)
 {
-	if (c == '\'' && !(*state & 2) && !(*state & 4))
-		*state ^= 1;
-	else if (c == '\"' && !(*state & 1) && !(*state & 4))
-		*state ^= 2;
-	else if (c == '`' && !(*state & 1))
-		*state ^= 4;
-}
+	if (q == '\'')
+		return (1);
+	else if (q == '\"')
+		return (1);
+	else if (q == '`')
+		return (1);
+	return (0);
+}	
 
 int	get_padded_len(char *line)
 {

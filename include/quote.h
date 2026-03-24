@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 15:35:12 by akkim             #+#    #+#             */
-/*   Updated: 2026/03/20 19:56:31 by akkim            ###   ########.fr       */
+/*   Updated: 2026/03/24 15:56:23 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,7 @@
 
 int	chk_quote(char q);
 int	skip_quote(char **line, int start_i, char type);
+void	update_quote_state(char c, int *state);
+int	validate_quotes(char *line);
 
 #endif
