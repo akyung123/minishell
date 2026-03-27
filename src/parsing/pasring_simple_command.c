@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:11 by akkim             #+#    #+#             */
-/*   Updated: 2026/03/21 23:55:53 by akkim            ###   ########.fr       */
+/*   Updated: 2026/03/27 16:01:42 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ t_simple_command	*build_cmd_struct(char **tokens)
 
 // ' '를 추가 후, 토큰화 -> 문법 검사 필요!
 // <simple_command> ::= <cmd_name> <arguments_opt> <redirects_opt>
-t_simple_command	*parsing_simple_command(char *line)
+t_simple_command	*parsing_simple_command(t_info_env *env, char *line)
 {
 	t_simple_command	*simple_command;
 	char				**tokens;
