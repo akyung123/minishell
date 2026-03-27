@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:19 by akkim             #+#    #+#             */
-/*   Updated: 2026/03/24 17:03:42 by akkim            ###   ########.fr       */
+/*   Updated: 2026/03/27 16:02:20 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*find_next_operator(char *line)
 	return (NULL);
 }
 
-t_command_line	*parsing_command_line(char **line)
+t_command_line	*parsing_command_line(t_info_env *env, char **line)
 {
 	t_command_line	*command_line;
 	char			*tmp;
@@ -59,13 +59,13 @@ t_command_line	*parsing_command_line(char **line)
 	{
 		command_line->comm_oper = comm[0];
 		tmp = ft_substr(*line, 0, comm - (*line));
-		command_line->pipeline = parsing_pipeline(tmp);
+		command_line->pipeline = parsing_pipeline(env, tmp);
 		free(tmp);
 		tmp = ft_strdup(comm + 2);
-		command_line->next = parsing_command_line(&tmp);
+		command_line->next = parsing_command_line(env, &tmp);
 		free(tmp);
 	}
 	else
-		command_line->pipeline = parsing_pipeline(ft_strdup(*line));
+		command_line->pipeline = parsing_pipeline(env, ft_strdup(*line));
 	return (command_line);
 }
