@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 18:43:07 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/15 21:13:12 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/15 22:28:50 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,18 +107,20 @@ int	executor_pipeline(t_info_env *env, t_pipeline *pipeline)
 {
 	int		state;
 
-	// pipeline->pipeline이 없을 때까지 진행해야한다. 
-	// 모든 pipeline->simple_command는 프로세스로 분리해서 실행한다
 	state = 0;
 	if (!pipeline)
 		return (0);
-	// state로 종료 코드 전달 받기
+	// 단일 명령인 경우 builtin 처리함
+	if (!pipeline->next && is_builtin(pipeline->simple_command->cmd))
+	{
+		builin_handler(env, pipeline->simple_command);
+		if (env->exit_code != 0)
+			return (0);
+		return (1);
+	}
 	state = executor_simple_command(env, pipeline->simple_command);
 	if (state)
-	{
-		// wait() : 프로세스 대기 함수 사용
 		executor_pipeline(env, pipeline->next);
-	}
 	return (1);
 }
 
