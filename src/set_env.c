@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 17:26:48 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/11 15:47:14 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/15 20:35:12 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	init_env(t_info_env *env, char **envp)
 
 	i = 0;
 	env->head = NULL;
+	env->envp = envp;
 	while (envp[i])
 	{
 		eq = ft_strchr(envp[i], '=');

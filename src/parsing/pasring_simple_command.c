@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:11 by akkim             #+#    #+#             */
-/*   Updated: 2026/03/27 16:01:42 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/15 21:29:50 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,28 +62,30 @@ int	check_syntax(char **tokens)
 	return (1);
 }
 
-// 리다이렉션 노드를 생성하고 연결하는 함수 (예시)
-static void	add_redir_node(t_redirect **list, char *type, char *file)
+// 간단한 리다이렉션 생성 함수
+static t_redirect	*create_redir(char *type, char *file)
 {
 	t_redirect	*new;
-	t_redirect	*tmp;
 
 	new = malloc(sizeof(t_redirect));
 	if (!new)
-		return ;
+		return (NULL);
 	new->type = ft_strdup(type);
 	new->filename = ft_strdup(file);
-	new->next = NULL;
-	if (!*list)
-		*list = new;
-	else
-	{
-		tmp = *list;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
-	}
+	return (new);
 }
+
+// 리다이렉션 해제 함수
+/*
+static void	free_redir(t_redirect *redir)
+{
+	if (!redir)
+		return ;
+	free(redir->type);
+	free(redir->filename);
+	free(redir);
+}
+*/
 
 static int	count_args(char **tokens)
 {
@@ -129,9 +131,9 @@ t_simple_command	*build_cmd_struct(char **tokens)
 		if (is_redir(tokens[i]))
 		{
 			if (j == 0)
-				add_redir_node(&(cmd->pre_red), tokens[i], tokens[i + 1]);
+				cmd->pre_red = create_redir(tokens[i], tokens[i + 1]);
 			else
-				add_redir_node(&(cmd->suff_red), tokens[i], tokens[i + 1]);
+				cmd->suff_red = create_redir(tokens[i], tokens[i + 1]);
 			i += 2;
 		}
 		else
@@ -150,17 +152,18 @@ t_simple_command	*parsing_simple_command(t_info_env *env, char *line)
 	t_simple_command	*simple_command;
 	char				**tokens;
 
+	(void)env;
 	if (!line)
 		return (NULL);
-	simple_command = malloc(sizeof(simple_command));
-	if (!simple_command)
-		return (NULL);
 	tokens = tokenize_line(line);
+	if (!tokens)
+		return (NULL);
 	if (!check_syntax(tokens))
 	{
 		free_tokens(tokens);
 		return (NULL);
 	}
 	simple_command = build_cmd_struct(tokens);
+	free_tokens(tokens);
 	return (simple_command);
 }

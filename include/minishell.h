@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:28:09 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/20 19:46:09 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/15 21:07:16 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 
 # include "libft.h"
 # include "ft_printf_bonus.h"
+# include "get_next_line.h"
 # include <stdio.h>
 # include <unistd.h>
 # include <readline/readline.h>
+# include <sys/wait.h>
 
 typedef struct l_env
 {
@@ -29,11 +31,14 @@ typedef struct l_env
 typedef struct l_info_env
 {
 	t_env	*head;
+	char	**envp;
 	int		exit_code;
 }		t_info_env;
 
 void	init_env(t_info_env *env, char **envp);
 char	*get_env_val(t_env *head, char *key);
+
+// built-in function
 void	mini_pwd(t_info_env *env);
 void	mini_env(t_info_env *env);
 void	mini_export(t_info_env *env, char *str);
@@ -41,6 +46,5 @@ void	mini_unset(t_info_env *env, char *key);
 void	mini_cd(t_info_env *env, char *path);
 void	mini_exit(t_info_env *env, char **code);
 void	mini_echo(t_info_env *env ,char **str);
-
 
 #endif
