@@ -108,12 +108,14 @@ void	set_process(t_pipex *pipex)
 	if (pipex->out == -1)
 	{
 		dup2(pipex->fd[1], 1);
-		close(pipex->fd[1]);
+		if (pipex->in > 2)
+			close(pipex->fd[1]);
 	}
 	else
 	{
 		dup2(pipex->out, 1);
-		close(pipex->out);
+		if (pipex->in > 2)
+			close(pipex->out);
 	}
 	close(pipex->fd[0]);
 }
@@ -129,6 +131,9 @@ pid_t	run_process(t_pipex *pipex, t_simple_command *simple_command)
 		run_cmd(pipex, simple_command);
 	}
 	else
-		close(pipex->fd[1]);
+	{
+		if (pipex->in > 2)
+			close(pipex->fd[1]);
+	}
 	return (pid);
 }
