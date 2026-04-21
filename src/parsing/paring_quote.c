@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 15:34:25 by akkim             #+#    #+#             */
-/*   Updated: 2026/03/24 17:14:04 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/21 10:29:43 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ void	check_quote(char **line)
 	{
 		i = 0;
 		state = 0;
+		if (!line || !(*line))
+			return ;
 		while ((*line)[i])
 			update_quote_state((*line)[i++], &state);
 		if (state == 0)

@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 18:43:07 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/15 22:28:50 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/21 11:03:29 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,29 +85,22 @@ void	setting_command(t_pipex *pipex, t_simple_command *simple_command)
 }
 
 // simpel_command 실행 함수
-int	executor_simple_command(t_info_env *env, t_simple_command *simple_command)
+int	executor_simple_command(t_simple_command *simple_command, t_pipex *pipex)
 {
 	int		pid;
-	int		status;
-	t_pipex	*pipex;
 
-	pipex = (t_pipex *)malloc(sizeof(t_pipex));
-	pipe(pipex->fd);
-	// 매번 PATH를 계산하는 비효율적인 과정이 있음. 추후 수정할 것.
-	pipex->paths = ft_split(get_env_val(env->head, "PATH"), ':');
-	pipex->envp = env->envp;
 	setting_command(pipex, simple_command);
 	pid = run_process(pipex, simple_command);
-	if (pid > 0)
-		waitpid(pid, &status, 0);
+	pipex->count++;
 	return (pid); //반환값 생성 추가해야함.
 }
 
-int	executor_pipeline(t_info_env *env, t_pipeline *pipeline)
+int	executor_pipeline(t_info_env *env, t_pipeline *pipeline, t_pipex *pipex)
 {
-	int		state;
+	int		status;
+	int		i;
 
-	state = 0;
+	i = 0;
 	if (!pipeline)
 		return (0);
 	// 단일 명령인 경우 builtin 처리함
@@ -118,28 +111,38 @@ int	executor_pipeline(t_info_env *env, t_pipeline *pipeline)
 			return (0);
 		return (1);
 	}
-	state = executor_simple_command(env, pipeline->simple_command);
-	if (state)
-		executor_pipeline(env, pipeline->next);
+	executor_simple_command(pipeline->simple_command, pipex);
+	if (pipeline->next)
+		executor_pipeline(env, pipeline->next, pipex);
+	while (i < pipex->count)
+	{
+		waitpid(pipex->pids[i], &status, 0);
+		i++;
+	}
 	return (1);
 }
 
 int	executor_command_line(t_info_env *env, t_command_line *command_line)
 {
-	int	state;
+	int		stat;
+	t_pipex	*pipex;
 
-	state = 0;
+	pipex = (t_pipex *)malloc(sizeof(t_pipex));
+	pipex->count = 0;
+	pipex->paths = ft_split(get_env_val(env->head, "PATH"), ':');
+	pipex->envp = env->envp;
+	pipex->pids = (pid_t *)malloc(sizeof(pid_t) * 1024);
 	if (!command_line)
 		return (0);
-	state = executor_pipeline(env, command_line->pipeline);
+	stat = executor_pipeline(env, command_line->pipeline, pipex);
 	if (command_line->comm_oper == '&')
 	{
-		if (state) // 성공하면
+		if (stat) // 성공하면
 			executor_command_line(env, command_line->next);
 	}
 	else if (command_line->comm_oper == '|')
 	{
-		if (!state) // 실패하면
+		if (!stat) // 실패하면
 			executor_command_line(env, command_line->next);
 	}
 	return (1);

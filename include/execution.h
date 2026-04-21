@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 17:13:05 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/15 21:10:43 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/15 23:03:01 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@
 typedef struct l_pipex
 {
 	int		pid;
+	int		count;
 	int		in;
 	int		out;
 	int		fd[2];
+	pid_t 	*pids;
 	char	**paths;
 	char	**envp;
 }	t_pipex;
