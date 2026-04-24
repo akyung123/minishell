@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 15:02:03 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/21 11:49:16 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/24 21:24:42 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,21 @@
 #include "env.h"
 #include "parsing.h"
 #include <stdio.h>
+
+int	is_only_whitespace(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		// 9-13번은 탭, 개행 등 / 32번은 스페이스
+		if (!((line[i] >= 9 && line[i] <= 13) || line[i] == 32))
+			return (0); // 공백이 아닌 문자가 발견됨
+		i++;
+	}
+	return (1); // 끝까지 공백만 있음
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -27,11 +42,17 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = readline("minishell: ");
-		// if (!line) // Ctrl+D 또는 에러 시 종료
-		// 	break ;
+		if (!line) // Ctrl+D 또는 에러 시 종료
+			break ;
+		if (is_only_whitespace(line)) 
+		{
+			free(line);
+			continue ; // 아래 파싱/실행 과정을 건너뛰고 다시 입력을 받음
+		}
 		command_line = parsing_command_line(&env, &line);
 		printf("%s  파싱완료\n", line);
-		executor_command_line(&env, command_line);
+        if (command_line)
+		    executor_command_line(&env, command_line);
 		printf("%s 실행 완료\n", line);
 		// 실행 함수(command_line을 들고감)
 		// test_command_line(command_line);
