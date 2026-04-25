@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 18:43:07 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/25 11:43:29 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/25 22:34:58 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,20 +67,19 @@ void	setting_command(t_pipex *pipex, t_simple_command *simple_command)
 {
 	// pre_red 연결
 	if (simple_command->pre_red)
-		pipex->in = open_file_red(simple_command->pre_red);
-	if (pipex->in == -1)
-		perror(simple_command->pre_red->filename);
-	if (simple_command->suff_red)
-		pipex->out = open_file_red(simple_command->suff_red);
-	if (pipex->out == -1)
 	{
-		perror(simple_command->suff_red->filename);
-		close(pipex->in);
-		close(pipex->out);
-		free(pipex);
-		exit(1);
-		// exit용 함수 새로 만들어야함
-		// free해야할 메모리가 많음
+		pipex->in = open_file_red(simple_command->pre_red);
+		if (pipex->in == -1)
+			perror(simple_command->pre_red->filename);
+	}
+	if (simple_command->suff_red)
+	{
+		pipex->out = open_file_red(simple_command->suff_red);
+		if (pipex->out == -1)
+		{
+			perror(simple_command->suff_red->filename);
+			exit(1);
+		}
 	}
 }
 
@@ -130,6 +129,8 @@ int	executor_command_line(t_info_env *env, t_command_line *command_line)
 	t_pipex	*pipex;
 
 	pipex = (t_pipex *)malloc(sizeof(t_pipex));
+	pipex->in = -1;
+	pipex->out = -1;
 	pipex->count = 0;
 	pipex->paths = ft_split(get_env_val(env->head, "PATH"), ':');
 	pipex->envp = env->envp;
