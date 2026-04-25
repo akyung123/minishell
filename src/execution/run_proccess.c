@@ -92,20 +92,20 @@ void	run_cmd(t_pipex *pipex, t_simple_command *simple)
 
 void	set_process(t_pipex *pipex)
 {
-	int	temp;
+	//int	temp;
 
-	if (pipex->in == -1) // 빈 입력이랑 연결
-	{
-		temp = open("/dev/null", O_RDONLY);
-		dup2(temp, 0);
-		close(temp);
-	}
-	else
+	// if (pipex->in == -1) // 빈 입력이랑 연결
+	// {
+	// 	temp = open("/dev/null", O_RDONLY);
+	// 	dup2(temp, 0);
+	// 	close(temp);
+	// }
+	if (pipex->in != -1)
 	{
 		dup2(pipex->in, 0);
 		close(pipex->in);
 	}
-	if (pipex->out == -1)
+	if (pipex->out != -1)
 	{
 		dup2(pipex->fd[1], 1);
 		if (pipex->in > 2)
@@ -132,8 +132,11 @@ pid_t	run_process(t_pipex *pipex, t_simple_command *simple_command)
 	}
 	else
 	{
-		if (pipex->in > 2)
+		// if (pipex->in != -1)
+		// 	close(pipex->in);
+		if (pipex->fd[1] != -1)
 			close(pipex->fd[1]);
+		pipex->in = pipex->fd[0];
 	}
 	return (pid);
 }

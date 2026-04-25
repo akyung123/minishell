@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:57:54 by akkim             #+#    #+#             */
-/*   Updated: 2026/03/27 16:02:11 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/25 11:42:02 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ t_pipeline	*parsing_pipeline(t_info_env *env, char *line)
 	if (!pipeline)
 		return (NULL);
 	pipeline->next = 0;
-	p_op = minishell_strrchr(line, '|');
+	p_op = ft_strchr(line, '|');
 	if (p_op != NULL)
 	{
 		tmp = ft_substr(line, 0, p_op - line);
-		pipeline->next = parsing_pipeline(env, tmp);
+		pipeline->simple_command = parsing_simple_command(env, tmp);
 		free(tmp);
 		tmp = ft_strdup(p_op + 1);
-		pipeline->simple_command = parsing_simple_command(env, tmp);
+		pipeline->next = parsing_pipeline(env, tmp);
 		free(tmp);
 	}
 	else

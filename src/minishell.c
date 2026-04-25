@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 15:02:03 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/24 21:24:42 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/24 21:26:47 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ int	main(int argc, char **argv, char **envp)
 			continue ; // 아래 파싱/실행 과정을 건너뛰고 다시 입력을 받음
 		}
 		command_line = parsing_command_line(&env, &line);
-		printf("%s  파싱완료\n", line);
+		// printf("%s  파싱완료\n", line);
         if (command_line)
 		    executor_command_line(&env, command_line);
-		printf("%s 실행 완료\n", line);
+		// printf("%s 실행 완료\n", line);
 		// 실행 함수(command_line을 들고감)
 		// test_command_line(command_line);
 		free_command_line(command_line);

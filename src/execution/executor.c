@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 18:43:07 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/21 11:51:21 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/25 11:43:29 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ int	executor_pipeline(t_info_env *env, t_pipeline *pipeline, t_pipex *pipex)
 			return (0);
 		return (1);
 	}
+	if (pipeline->next)
+		pipe(pipex->fd);
 	executor_simple_command(pipeline->simple_command, pipex);
 	if (pipeline->next)
 		executor_pipeline(env, pipeline->next, pipex);
