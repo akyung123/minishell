@@ -51,7 +51,9 @@ static char	*find_path(t_pipex *pipex, char *cmd)
 // 0 : cmd x, 1: fake cmd
 void	cmd_error(t_pipex *pipex, char **cmd)
 {
-	ft_putstr_fd("pipex: command not found: ", 2);
+	if (cmd && cmd[0])
+		ft_putstr_fd(cmd[0], 2);
+	ft_putstr_fd(": command not found\n", 2);
 	free_split(cmd);
 	free_split(pipex->paths);
 	free(pipex);
@@ -92,14 +94,6 @@ void	run_cmd(t_pipex *pipex, t_simple_command *simple)
 
 void	set_process(t_pipex *pipex)
 {
-	//int	temp;
-
-	// if (pipex->in == -1) // 빈 입력이랑 연결
-	// {
-	// 	temp = open("/dev/null", O_RDONLY);
-	// 	dup2(temp, 0);
-	// 	close(temp);
-	// }
 	if (pipex->in != -1)
 	{
 		dup2(pipex->in, 0);

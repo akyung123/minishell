@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 18:43:07 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/25 22:34:58 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/26 18:33:46 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	setting_command(t_pipex *pipex, t_simple_command *simple_command)
 	if (simple_command->pre_red)
 	{
 		pipex->in = open_file_red(simple_command->pre_red);
-		if (pipex->in == -1)
 			perror(simple_command->pre_red->filename);
 	}
 	if (simple_command->suff_red)
@@ -131,6 +130,8 @@ int	executor_command_line(t_info_env *env, t_command_line *command_line)
 	pipex = (t_pipex *)malloc(sizeof(t_pipex));
 	pipex->in = -1;
 	pipex->out = -1;
+	pipex->fd[0] = -1;
+	pipex->fd[1] = -1;
 	pipex->count = 0;
 	pipex->paths = ft_split(get_env_val(env->head, "PATH"), ':');
 	pipex->envp = env->envp;

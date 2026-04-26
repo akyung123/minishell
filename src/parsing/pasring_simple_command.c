@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:11 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/15 21:29:50 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/26 18:02:57 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,14 +130,18 @@ t_simple_command	*build_cmd_struct(char **tokens)
 	{
 		if (is_redir(tokens[i]))
 		{
-			if (j == 0)
+			if (ft_strcmp(tokens[i], "<") == 0 || ft_strcmp(tokens[i], "<<") == 0)
 				cmd->pre_red = create_redir(tokens[i], tokens[i + 1]);
-			else
+			else if (ft_strcmp(tokens[i], ">") == 0 || ft_strcmp(tokens[i], ">>") == 0)
 				cmd->suff_red = create_redir(tokens[i], tokens[i + 1]);
 			i += 2;
 		}
 		else
+		{
+			if (j == 0)
+				cmd->cmd = ft_strdup(tokens[i]);
 			cmd->args[j++] = ft_strdup(tokens[i++]);
+		}
 	}
 	cmd->args[j] = NULL;
 	if (j > 0)
