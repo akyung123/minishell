@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:28:09 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/21 11:06:42 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/26 22:31:23 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <readline/readline.h>
+#include <readline/history.h>
 # include <sys/wait.h>
 
 typedef struct l_env
