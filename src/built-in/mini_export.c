@@ -6,11 +6,19 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 19:13:55 by akkim             #+#    #+#             */
-/*   Updated: 2026/03/18 19:34:37 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 00:11:28 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
+
+static void	export_error(t_info_env *env, char *str)
+{
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+	env->exit_code = 1;
+}
 
 static int	valid_identifier(char *key)
 {
@@ -114,7 +122,7 @@ void	mini_export(t_info_env *env, char *str)
 	if (!eq)
 	{
 		if (!valid_identifier(str))
-			return ;
+			return (export_error(env, str));
 		if (!find_env_node(env->head, str))
 			env_add_back(&env->head, new_env_node(str, NULL));
 		env->exit_code = 0;
@@ -123,6 +131,7 @@ void	mini_export(t_info_env *env, char *str)
 	key = ft_substr(str, 0, eq - str);
 	if (!valid_identifier(key))
 	{
+		export_error(env, str);
 		free(key);
 		return ;
 	}

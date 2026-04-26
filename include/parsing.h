@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 18:00:44 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/26 22:22:07 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 00:21:29 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,13 @@ char				**tokenize_line(char *line);
 void	builin_handler(t_info_env *env, t_simple_command *simple_command);
 int		is_redir(char *token);
 
-void test_command_line(t_command_line *command_line);
-int	executor_command_line(t_info_env *env, t_command_line	*command_line);
-int	pipeline(t_info_env *env, t_pipeline *pipeline);
+void 	test_command_line(t_command_line *command_line);
+int		executor_command_line(t_info_env *env, t_command_line	*command_line);
+int		pipeline(t_info_env *env, t_pipeline *pipeline);
 void	free_command_line(t_command_line *cmd_line);
 void	refine_line(char **line, t_info_env *env);
 void	update_quote_state(char c, int *state);
+
+char	**free_split(char **str);
 
 #endif

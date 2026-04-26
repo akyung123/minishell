@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:19 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/26 17:10:03 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/26 23:49:04 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,20 @@ t_command_line	*parsing_command_line(t_info_env *env, char **line)
 	char			*tmp;
 	char			*comm;
 
-	if (!line)
+	if (!line || !*line)
 		return (NULL);
+	check_quote(line, env);
+	if (check_syntax_error(*line))
+	{
+		env->exit_code = 2;
+		return (0);
+	}
 	command_line = malloc(sizeof(t_command_line));
 	if (!command_line)
 		return (NULL);
 	command_line->next = 0;
 	command_line->comm_oper = 0;
-	check_quote(line, env);
-	// printf("chk quote\n");
 	comm = find_next_operator(*line);
-	// printf("chk comm\n");
 	if (comm != 0)
 	{
 		command_line->comm_oper = comm[0];

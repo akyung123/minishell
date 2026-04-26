@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:28:09 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/26 22:44:43 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/26 23:31:19 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include <signal.h>
 # include <termios.h>
 
-
 typedef struct l_env
 {
 	char			*key;
@@ -38,6 +37,8 @@ typedef struct l_info_env
 	char	**envp;
 	int		exit_code;
 }		t_info_env;
+
+extern int g_signo;
 
 void	init_env(t_info_env *env, char **envp);
 char	*get_env_val(t_env *head, char *key);

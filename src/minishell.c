@@ -6,14 +6,14 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 15:02:03 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/26 22:44:12 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/26 23:32:44 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "env.h"
 #include "parsing.h"
-#include <stdio.h>
+int g_signo = 0;
 
 int	is_only_whitespace(char *line)
 {
@@ -48,6 +48,11 @@ int	main(int argc, char **argv, char **envp)
 		{
 			printf("exit\n");
 			exit(0);
+		}
+		if (g_signo != 0)
+		{
+			env.exit_code = g_signo;
+			g_signo = 0;
 		}
 		if (is_only_whitespace(line))
 		{

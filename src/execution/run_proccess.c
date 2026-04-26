@@ -60,6 +60,28 @@ void	cmd_error(t_pipex *pipex, char **cmd)
 	exit(127);
 }
 
+void	path_error(char **cmd)
+{
+	if (cmd && cmd[0])
+	{
+		// ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd[0], 2);
+	}
+	if (access(cmd[0], F_OK) == 0)
+	{
+		ft_putstr_fd(": Permission denied\n", 2);
+		// free_split(cmd);
+		// free_split(pipex->paths);
+		// free(pipex);
+		exit(126);
+	}
+	ft_putstr_fd(": No such file or directory\n", 2);
+	// free_split(cmd);
+	// free_split(pipex->paths);
+	// free(pipex);
+	exit(127);
+}
+
 void	run_execve(t_pipex *pipex, t_simple_command *simple)
 {
 	if (execve(simple->cmd, simple->args, pipex->envp) == -1)
@@ -72,22 +94,19 @@ void	run_execve(t_pipex *pipex, t_simple_command *simple)
 
 void	run_cmd(t_pipex *pipex, t_simple_command *simple)
 {
-	if (!simple->cmd || !*simple->cmd)
-		cmd_error(pipex, simple->args); // erorr 처리
-	if (!simple->args)
-		cmd_error(pipex, simple->args);  // erorr 처리
-	if (simple->args[0][0] == '/'
-		|| (simple->args[0][0] == '.' && simple->args[0][1] == '/'))
+	if (!simple->cmd || !*simple->cmd || !simple->args)
+		cmd_error(pipex, simple->args);
+	if (ft_strchr(simple->args[0], '/'))
 	{
-		if (access(simple->cmd, X_OK) == 0)
-			;
-		else
-			cmd_error(pipex, simple->args);  // erorr 처리
+		if (access(simple->cmd, X_OK) != 0)
+			path_error(simple->args);
 	}
 	else
+	{
 		simple->cmd = find_path(pipex, simple->args[0]);
-	if (!simple->cmd)
-		cmd_error(pipex, simple->args);  // erorr 처리
+		if (!simple->cmd)
+			cmd_error(pipex, simple->args);
+	}
 	simple->args[0] = simple->cmd;
 	run_execve(pipex, simple);
 }

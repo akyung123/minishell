@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:11 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/26 22:21:15 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 00:25:45 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,34 @@ void	remove_quotes_only(char **line)
 	*line = new;
 }
 
+void	add_expanded_args(t_simple_command *cmd, char *token, int *j)
+{
+	char	**split;
+	char	**new_args;
+	int		k;
+	int		len;
+
+	split = ft_split(token, ' ');
+	len = 0;
+	while (split && split[len])
+		len++;
+	new_args = ft_calloc(*j + len + 1, sizeof(char *)); // 기존 개수 + 새 개수 + NULL
+	k = -1;
+	while (++k < *j)
+		new_args[k] = cmd->args[k]; // 기존 인자들 복사
+	k = -1;
+	while (++k < len)
+	{
+		if (*j == 0 && k == 0)
+			cmd->cmd = ft_strdup(split[k]); // 첫 번째 단어는 cmd 이름으로
+		new_args[*j + k] = ft_strdup(split[k]);
+	}
+	free(cmd->args);
+	cmd->args = new_args;
+	*j += len; // 인덱스 j를 추가된 개수만큼 증가시킴
+	free_tokens(split); // 임시로 쪼갠 껍데기 배열 해제 (현재 파일에 있는 함수)
+}
+
 t_simple_command	*build_cmd_struct(char **tokens, t_info_env *env)
 {
 	t_simple_command	*cmd;
@@ -158,7 +186,7 @@ t_simple_command	*build_cmd_struct(char **tokens, t_info_env *env)
 			else
 			{
 				refine_line(&tokens[i + 1], env);
-				printf("%s", tokens[i+1]);
+				ft_printf("%s", tokens[i+1]);
 				if (ft_strcmp(tokens[i], "<") == 0)
 					cmd->pre_red = create_redir(tokens[i], tokens[i + 1]);
 				else if (ft_strcmp(tokens[i], ">") == 0 || ft_strcmp(tokens[i], ">>") == 0)
@@ -169,9 +197,8 @@ t_simple_command	*build_cmd_struct(char **tokens, t_info_env *env)
 		else
 		{
 			refine_line(&tokens[i], env);
-			if (j == 0)
-				cmd->cmd = ft_strdup(tokens[i]);
-			cmd->args[j++] = ft_strdup(tokens[i++]);
+			add_expanded_args(cmd, tokens[i], &j);
+			i++;
 		}
 	}
 	cmd->args[j] = NULL;
