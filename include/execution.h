@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 17:13:05 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/15 23:03:01 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 00:59:57 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ typedef struct l_pipex
 }	t_pipex;
 
 pid_t	run_process(t_pipex *piepx, t_simple_command *simple_command);
+int	executor_pipeline(t_info_env *env, t_pipeline *pipeline, t_pipex *pipex);
 
 #endif

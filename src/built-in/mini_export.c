@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 19:13:55 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 00:11:28 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 01:33:32 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void	mini_export(t_info_env *env, char *str)
 	if (!valid_identifier(key))
 	{
 		export_error(env, str);
+		env->exit_code = 1;
 		free(key);
 		return ;
 	}

@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 18:43:07 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/26 22:26:31 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 01:41:02 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	executor_simple_command(t_simple_command *simple_command, t_pipex *pipex)
 	setting_command(pipex, simple_command);
 	pid = run_process(pipex, simple_command);
 	pipex->count++;
-	return (pid); //반환값 생성 추가해야함.
+	return (pid);
 }
 
 int	executor_pipeline(t_info_env *env, t_pipeline *pipeline, t_pipex *pipex)
@@ -119,6 +119,10 @@ int	executor_pipeline(t_info_env *env, t_pipeline *pipeline, t_pipex *pipex)
 	while (i < pipex->count)
 	{
 		waitpid(pipex->pids[i], &status, 0);
+		if (WIFEXITED(status))
+			env->exit_code = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			env->exit_code = 128 + WTERMSIG(status);
 		i++;
 	}
 	return (1);

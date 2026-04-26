@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 16:41:42 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/26 17:09:32 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 01:15:44 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,12 +128,15 @@ void	remove_quotes(char *line)
 	line[j] = '\0';
 }
 
-// quote 제거, 환경변수 제거 함수
 void	refine_line(char **line, t_info_env *env)
 {
 	if (!line || !(*line))
 		return ;
+	process_backticks(line, env);
 	expand_env(line, env);
-	if (*line) 
+	if (*line)
+	{
 		remove_quotes(*line);
+		restore_expanded_quotes(*line);
+	}
 }

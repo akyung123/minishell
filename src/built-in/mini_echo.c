@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:59:15 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/07 15:06:32 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 01:38:43 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,33 +28,33 @@
 // char **env
 void mini_echo(t_info_env *env, char **str)
 {
-    int j;
-    int k;
-    int n_flag;
+	int j;
+	int k;
+	int n_flag;
 
-    (void)env;
-    j = 1;
+	(void)env;
+	j = 1;
 	n_flag = 0;
-    while (str[j] && str[j][0] == '-' && str[j][1] == 'n')
-    {
-        k = 1;
-        while (str[j][k] == 'n')
-            k++;
-        if (str[j][k] == '\0')
-        {
-            n_flag = 1;
-            j++;
-        }
-        else
-            break;
-    }
-    while (str[j])
-    {
-        ft_printf("%s", str[j]);
-        if (str[j + 1])
-            ft_printf(" ");
-        j++;
-    }
-    if (n_flag == 0)
-        ft_printf("\n");
+	while (str[j] && str[j][0] == '-' && str[j][1] == 'n')
+	{
+		k = 1;
+		while (str[j][k] == 'n')
+			k++;
+		if (str[j][k] == '\0')
+		{
+			n_flag = 1;
+			j++;
+		}
+		else
+			break;
+	}
+	while (str[j])
+	{
+		ft_printf("%s", str[j]);
+		if (str[j + 1])
+			ft_printf(" ");
+		j++;
+	}
+	if (n_flag == 0)
+		ft_printf("\n");
 }
