@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:28:09 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/26 22:31:23 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/26 22:44:43 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <readline/readline.h>
-#include <readline/history.h>
+# include <readline/history.h>
 # include <sys/wait.h>
+# include <signal.h>
+# include <termios.h>
+
 
 typedef struct l_env
 {
@@ -49,5 +52,8 @@ void	mini_exit(t_info_env *env, char **code);
 void	mini_echo(t_info_env *env ,char **str);
 
 int		is_builtin(char *cmd);
+
+void	set_terminal_print_off(void);
+void	set_signal(void);
 
 #endif

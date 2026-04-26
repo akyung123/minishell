@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 15:02:03 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/26 22:32:36 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/26 22:44:12 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,26 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	init_env(&env, envp);
+	set_terminal_print_off();
+	set_signal();
 	while (1)
 	{
 		line = readline("minishell: ");
 		if (!line)
-			break ;
+		{
+			printf("exit\n");
+			exit(0);
+		}
 		if (is_only_whitespace(line))
 		{
 			free(line);
 			continue ;
 		}
-        if (*line != '\0')
-            add_history(line);
+		if (*line != '\0')
+			add_history(line);
 		command_line = parsing_command_line(&env, &line);
-        if (command_line)
-		    executor_command_line(&env, command_line);
+		if (command_line)
+			executor_command_line(&env, command_line);
 		// test_command_line(command_line);
 		free_command_line(command_line);
 		free(line);
