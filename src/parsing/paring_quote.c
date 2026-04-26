@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 15:34:25 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/26 17:09:41 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/26 18:58:41 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	check_quote(char **line, t_info_env *env)
 	int	i;
 	int	state;
 
+	(void)env;
 	while (1)
 	{
 		i = 0;
@@ -97,6 +98,6 @@ void	check_quote(char **line, t_info_env *env)
 		if (!plus_line(line))
 			return ;	// error
 	}
-	// ""제거 및 변환 함수
-	refine_line(line, env);
+	// // ""제거 및 변환 함수
+	// refine_line(line, env);
 }

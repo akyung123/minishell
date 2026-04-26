@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:11 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/26 18:02:57 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/26 18:59:03 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ static int	count_args(char **tokens)
 	return (count);
 }
 
-t_simple_command	*build_cmd_struct(char **tokens)
+t_simple_command	*build_cmd_struct(char **tokens, t_info_env *env)
 {
 	t_simple_command	*cmd;
 	int					i;
@@ -138,6 +138,7 @@ t_simple_command	*build_cmd_struct(char **tokens)
 		}
 		else
 		{
+			refine_line(&tokens[i], env);
 			if (j == 0)
 				cmd->cmd = ft_strdup(tokens[i]);
 			cmd->args[j++] = ft_strdup(tokens[i++]);
@@ -167,7 +168,7 @@ t_simple_command	*parsing_simple_command(t_info_env *env, char *line)
 		free_tokens(tokens);
 		return (NULL);
 	}
-	simple_command = build_cmd_struct(tokens);
+	simple_command = build_cmd_struct(tokens, env);
 	free_tokens(tokens);
 	return (simple_command);
 }
