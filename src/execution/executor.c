@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 18:43:07 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/26 18:33:46 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/26 22:26:31 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	here_doc(t_redirect *redirect)
 	// open 실패 시, 에러 처리 안해둠(norm 25줄 문제)
 	fd = open(".here_doc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	eof = ft_strjoin(redirect->filename, "\n");
+	//printf("eof : %s\n", eof);
 	write(1, "> ", 2);
 	while (1)
 	{
@@ -69,6 +70,7 @@ void	setting_command(t_pipex *pipex, t_simple_command *simple_command)
 	if (simple_command->pre_red)
 	{
 		pipex->in = open_file_red(simple_command->pre_red);
+		if (pipex->in == -1)
 			perror(simple_command->pre_red->filename);
 	}
 	if (simple_command->suff_red)

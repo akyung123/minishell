@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:11 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/26 18:59:03 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/26 22:21:15 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,18 +75,6 @@ static t_redirect	*create_redir(char *type, char *file)
 	return (new);
 }
 
-// 리다이렉션 해제 함수
-/*
-static void	free_redir(t_redirect *redir)
-{
-	if (!redir)
-		return ;
-	free(redir->type);
-	free(redir->filename);
-	free(redir);
-}
-*/
-
 static int	count_args(char **tokens)
 {
 	int	i;
@@ -114,6 +102,38 @@ static int	count_args(char **tokens)
 	return (count);
 }
 
+// 따옴표(껍데기)만 제거하는 전용 함수
+void	remove_quotes_only(char **line)
+{
+	char	*str;
+	char	*new;
+	int		i;
+	int		j;
+	int		state;
+	int		prev;
+
+	if (!line || !*line)
+		return ;
+	str = *line;
+	new = malloc(ft_strlen(str) + 1);
+	if (!new)
+		return ;
+	i = -1;
+	j = 0;
+	state = 0;
+	while (str[++i])
+	{
+		prev = state;
+		update_quote_state(str[i], &state);
+		if (state != prev)
+			continue ;
+		new[j++] = str[i];
+	}
+	new[j] = '\0';
+	free(str);
+	*line = new;
+}
+
 t_simple_command	*build_cmd_struct(char **tokens, t_info_env *env)
 {
 	t_simple_command	*cmd;
@@ -130,10 +150,20 @@ t_simple_command	*build_cmd_struct(char **tokens, t_info_env *env)
 	{
 		if (is_redir(tokens[i]))
 		{
-			if (ft_strcmp(tokens[i], "<") == 0 || ft_strcmp(tokens[i], "<<") == 0)
+			if (ft_strcmp(tokens[i], "<<") == 0)
+			{
+				remove_quotes_only(&tokens[i + 1]);
 				cmd->pre_red = create_redir(tokens[i], tokens[i + 1]);
-			else if (ft_strcmp(tokens[i], ">") == 0 || ft_strcmp(tokens[i], ">>") == 0)
-				cmd->suff_red = create_redir(tokens[i], tokens[i + 1]);
+			}
+			else
+			{
+				refine_line(&tokens[i + 1], env);
+				printf("%s", tokens[i+1]);
+				if (ft_strcmp(tokens[i], "<") == 0)
+					cmd->pre_red = create_redir(tokens[i], tokens[i + 1]);
+				else if (ft_strcmp(tokens[i], ">") == 0 || ft_strcmp(tokens[i], ">>") == 0)
+					cmd->suff_red = create_redir(tokens[i], tokens[i + 1]);
+			}
 			i += 2;
 		}
 		else
