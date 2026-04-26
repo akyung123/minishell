@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:28:09 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/20 19:46:13 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 02:19:47 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 # define ENV_H
 
 # include "minishell.h"
+
+// mini_export util
+void	export_error(t_info_env *env, char *str);
+void	print_sorted_export(t_info_env *env);
 
 // init env & node
 void	init_env(t_info_env *env, char **envp);

@@ -1,14 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strclat.c                                       :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akkim <2004924@donga.ac.kr>                +#+  +:+       +#+        */
+/*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:32:40 by akkim             #+#    #+#             */
-/*   Updated: 2025/04/01 13:32:47 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 07:59:48 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 size_t	ft_strlcat(char *dest, const char *src, size_t size)
@@ -34,4 +35,4 @@ size_t	ft_strlcat(char *dest, const char *src, size_t size)
 	if ((dest_len + i) < size)
 		dest[dest_len + i] = '\0';
 	return (dest_len + src_len);
-}		
+}

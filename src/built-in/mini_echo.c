@@ -6,31 +6,31 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:59:15 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 01:50:19 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 02:03:23 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int is_n_option(char *str)
+static int	is_n_option(char *str)
 {
-    int i;
+	int	i;
 
-    if (!str || str[0] != '-')
-        return (0);
-    i = 1;
-    if (str[i] == '\0') // 그냥 "-" 만 들어온 경우
-        return (0);
-    while (str[i])
-    {
-        if (str[i] != 'n')
-            return (0);
-        i++;
-    }
-    return (1);
+	if (!str || str[0] != '-')
+		return (0);
+	i = 1;
+	if (str[i] == '\0')
+		return (0);
+	while (str[i])
+	{
+		if (str[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
-void mini_echo(t_info_env *env, char **str)
+void	mini_echo(t_info_env *env, char **str)
 {
 	int	i;
 	int	n_flag;
@@ -45,7 +45,7 @@ void mini_echo(t_info_env *env, char **str)
 	}
 	while (str[i])
 	{
-		ft_putstr_fd(str[i], 1); // ft_printf 대신 libft 함수 사용 권장
+		ft_putstr_fd(str[i], 1);
 		if (str[i + 1])
 			write(1, " ", 1);
 		i++;

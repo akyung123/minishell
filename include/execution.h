@@ -6,14 +6,14 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 17:13:05 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 00:59:57 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 07:59:06 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTION_H
 # define EXECUTION_H
 
-#include <fcntl.h>
+# include <fcntl.h>
 
 typedef struct l_pipex
 {
@@ -22,12 +22,14 @@ typedef struct l_pipex
 	int		in;
 	int		out;
 	int		fd[2];
-	pid_t 	*pids;
+	pid_t	*pids;
 	char	**paths;
 	char	**envp;
 }	t_pipex;
 
 pid_t	run_process(t_pipex *piepx, t_simple_command *simple_command);
-int	executor_pipeline(t_info_env *env, t_pipeline *pipeline, t_pipex *pipex);
+void	run_cmd(t_pipex *pipex, t_simple_command *simple);
+int		executor_pipeline(t_info_env *env,
+			t_pipeline *pipeline, t_pipex *pipex);
 
 #endif

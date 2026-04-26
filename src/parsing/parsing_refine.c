@@ -6,15 +6,14 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 16:41:42 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 01:15:44 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 07:21:31 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "quote.h"
 #include "parsing.h"
-#include "minishell.h"
 
-char *append_char(char *str, char c)
+char	*append_char(char *str, char c)
 {
 	char	*new_str;
 	int		len;
@@ -30,67 +29,51 @@ char *append_char(char *str, char c)
 	return (new_str);
 }
 
-char *ft_strjoin_free(char *s1, char *s2)
+static int	handle_dollar(char **res, char *line, int i, t_info_env *env)
 {
-	char	*new_str;
+	char	*name;
+	char	*val;
+	int		start;
 
-	if (!s1 || !s2)
-		return (NULL);
-	new_str = ft_strjoin(s1, s2);
-	free(s1);
-	return (new_str);
+	if (line[++i] == '?')
+	{
+		val = ft_itoa(env->exit_code);
+		*res = ft_strjoin_free(*res, val);
+		free(val);
+		return (i + 1);
+	}
+	if (ft_isalnum(line[i]) || line[i] == '_')
+	{
+		start = i;
+		while (line[i] && (ft_isalnum(line[i]) || line[i] == '_'))
+			i++;
+		name = ft_substr(line, start, i - start);
+		val = get_env_val(env->head, name);
+		if (val)
+			*res = ft_strjoin_free(*res, val);
+		free(name);
+		return (i);
+	}
+	*res = append_char(*res, '$');
+	return (i);
 }
-
-// 환경변수 변환 함수
-	// 변환 시, ' 안에는 변환 X
-	//			" 안에는 변환되어야함
-	// (이 때는 $USER와 같은 경우)
-	// 변수명으로 환경변수 값을 찾아주는 가상의 헬퍼 함수 (이미 구현되어 있다면 그것을 사용하세요!)
-// 만약 못 찾으면 빈 문자열("") 또는 NULL을 반환해야 합니다.
 
 void	expand_env(char **line, t_info_env *env)
 {
 	char	*res;
-	char	*var_name;
-	char	*var_value;
 	int		i;
-	int		start;
 	int		state;
 
 	if (!line || !(*line))
 		return ;
-
-	res = ft_strdup(""); // 빈 문자열로 시작
+	res = ft_strdup("");
 	i = 0;
 	state = 0;
 	while ((*line)[i])
 	{
 		update_quote_state((*line)[i], &state);
-
 		if ((*line)[i] == '$' && !(state & 1))
-		{
-			i++;
-			if ((*line)[i] == '?')
-			{
-				var_value = ft_itoa(env->exit_code);
-				res = ft_strjoin_free(res, var_value);
-				free(var_value);
-				i++;
-			}
-			else if (ft_isalnum((*line)[i]) || (*line)[i] == '_')
-			{
-				start = i;
-				while ((*line)[i] && (ft_isalnum((*line)[i]) || (*line)[i] == '_'))
-					i++;
-				var_name = ft_substr(*line, start, i - start);
-				var_value = get_env_val(env->head, var_name);
-				if (var_value)
-					res = ft_strjoin_free(res, var_value);
-				free(var_name);
-			}
-			else
-				res = append_char(res, '$'); 
-		}
+			i = handle_dollar(&res, *line, i, env);
 		else
 		{
 			res = append_char(res, (*line)[i]);

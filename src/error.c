@@ -1,36 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/01 14:08:50 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 08:00:05 by akkim            ###   ########.fr       */
+/*   Created: 2026/04/27 02:18:53 by akkim             #+#    #+#             */
+/*   Updated: 2026/04/27 02:43:39 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
+#include "env.h"
+#include "quote.h"
 
-char	*ft_strnstr(const char *str, const char *to_find, size_t len)
+void	export_error(t_info_env *env, char *str)
 {
-	size_t	i;
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+	env->exit_code = 1;
+}
 
-	i = 0;
-	if (to_find[0] == '\0')
-		return ((char *)str);
-	while (*str != '\0' && len > 0)
-	{
-		i = 0;
-		if (*str == *to_find)
-		{
-			while (*(to_find + i) != '\0' && str[i] == to_find[i] && i < len)
-				i++;
-			if (*(to_find + i) == '\0')
-				return ((char *)str);
-		}
-		str++;
-		len--;
-	}
-	return (NULL);
+int	syntax_err_msg(char *token)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	ft_putstr_fd(token, 2);
+	ft_putstr_fd("'\n", 2);
+	return (1);
 }

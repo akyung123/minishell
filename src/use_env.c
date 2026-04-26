@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 15:46:19 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/11 15:47:06 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 02:22:58 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ t_env	*find_env_node(t_env *head, char *key)
 {
 	while (head)
 	{
-		if (ft_strlen(head->key) == ft_strlen(key) && \
-			ft_strncmp(head->key, key, ft_strlen(key)) == 0)
+		if (ft_strlen(head->key) == ft_strlen(key)
+			&& ft_strncmp(head->key, key, ft_strlen(key)) == 0)
 			return (head);
 		head = head->next;
 	}

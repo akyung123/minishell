@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 11:04:14 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/21 11:06:15 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 02:04:57 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	free_simple_command(t_simple_command *simple)
 		}
 		free(simple->args);
 	}
-	if (simple->cmd) // build_cmd_struct에서 할당된 경우
+	if (simple->cmd)
 		free(simple->cmd);
 	free_redirection(simple->pre_red);
 	free_redirection(simple->suff_red);
