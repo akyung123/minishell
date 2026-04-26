@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 18:00:44 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/21 11:06:50 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/26 17:11:13 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ typedef struct l_command_line
 char	*minishell_strrchr(const char *str, int ch);
 char	*ft_strstr(const char *haystack, const char *needle);
 
-void	check_quote(char **line);
 
 t_command_line		*parsing_command_line(t_info_env *env, char **line);
 t_pipeline			*parsing_pipeline(t_info_env *env, char *line);
@@ -59,5 +58,6 @@ void test_command_line(t_command_line *command_line);
 int	executor_command_line(t_info_env *env, t_command_line	*command_line);
 int	pipeline(t_info_env *env, t_pipeline *pipeline);
 void	free_command_line(t_command_line *cmd_line);
+void	refine_line(char **line, t_info_env *env);
 
 #endif

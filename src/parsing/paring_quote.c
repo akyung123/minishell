@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 15:34:25 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/21 10:29:43 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/26 17:09:41 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	skip_quote(char **line, int start_i, char type)
 }
 
 //기본 체크 함수(parsing commnad에서 사용할 메인 함수)
-void	check_quote(char **line)
+void	check_quote(char **line, t_info_env *env)
 {
 	int	i;
 	int	state;
@@ -97,4 +97,6 @@ void	check_quote(char **line)
 		if (!plus_line(line))
 			return ;	// error
 	}
+	// ""제거 및 변환 함수
+	refine_line(line, env);
 }
