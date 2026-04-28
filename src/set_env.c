@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 17:26:48 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/15 20:35:12 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/28 21:50:24 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "env.h"
 // env setting funtion for minishell
 // linked list
+// SHLVL nesting O
 
 // create node
 t_env	*new_env_node(char *key, char *value)
@@ -67,6 +68,8 @@ void	init_env(t_info_env *env, char **envp)
 		{
 			key = ft_substr(envp[i], 0, (size_t)(eq - envp[i]));
 			value = ft_strdup(eq + 1);
+			if (!ft_strcmp(key, "SHLVL"))
+				value = ft_itoa(ft_atoi(value) + 1);
 			env_add_back(&env->head, new_env_node(key, value));
 			free(key);
 			free(value);

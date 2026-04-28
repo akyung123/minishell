@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:36:56 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 03:03:11 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 08:45:03 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	update_quote_state(char c, int *state)
 }
 
 // 입력받아서 합치는 함수
-static int	plus_line(char **line)
+static int	plus_line(char **line, t_info_env *env)
 {
 	char	*new;
 	char	*tmp1;
@@ -32,7 +32,13 @@ static int	plus_line(char **line)
 
 	new = readline("> ");
 	if (!new)
+	{
+		env->exit_code = 2;
+		ft_putstr_fd("minishell: unexpected EOF while looking for matching quote\n", 2);
+		free(*line);
+		*line = NULL;
 		return (0);
+	}
 	tmp1 = ft_strjoin(*line, "\n");
 	if (!tmp1)
 	{
@@ -40,6 +46,7 @@ static int	plus_line(char **line)
 		return (0);
 	}
 	tmp2 = ft_strjoin(tmp1, new);
+	free(tmp1);
 	free(*line);
 	free(new);
 	*line = tmp2;
@@ -60,10 +67,17 @@ void	check_quote(char **line, t_info_env *env)
 		if (!line || !(*line))
 			return ;
 		while ((*line)[i])
+		{
+			if ((*line)[i] == '\\' && (*line)[i + 1])
+			{
+				i += 2;
+				continue ;
+			}
 			update_quote_state((*line)[i++], &state);
+		}
 		if (state == 0)
 			break ;
-		if (!plus_line(line))
+		if (!plus_line(line, env))
 			return ;
 	}
 }

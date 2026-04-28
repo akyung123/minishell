@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:19 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 06:40:53 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 08:36:48 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ t_command_line	*parsing_command_line(t_info_env *env, char **line)
 
 	if (!line || !*line)
 		return (NULL);
-	check_quote(line, env);
 	if (check_syntax_error(*line))
 	{
 		env->exit_code = 2;

@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 07:52:11 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 07:58:26 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/28 23:21:45 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,32 +80,41 @@ void	setting_command(t_pipex *pipex, t_simple_command *simple_command)
 }
 
 // simpel_command 실행 함수
-int	executor_simple_command(t_simple_command *simple_command, t_pipex *pipex)
+int	executor_simple_command(t_info_env *env, t_simple_command *simple_command, t_pipex *pipex)
 {
 	int		pid;
 
 	setting_command(pipex, simple_command);
-	pid = run_process(pipex, simple_command);
+	pid = run_process(env, pipex, simple_command);
 	pipex->count++;
 	return (pid);
 }
+// exeutor builtin 
+// run process랑 동일하게 실행함
+// 실행 후 
 
 int	executor_pipeline(t_info_env *env, t_pipeline *pipeline, t_pipex *pipex)
 {
+	int		stdout_backup;
 	int		status;
 	int		i;
 
 	i = 0;
+	stdout_backup = dup(STDOUT_FILENO);
 	if (!pipeline)
 		return (0);
 	if (!pipeline->next && is_builtin(pipeline->simple_command->cmd))
 	{
-		builin_handler(env, pipeline->simple_command);
+		setting_command(pipex, pipeline->simple_command);
+		set_process(pipex);
+		builtin_handler(env, pipeline->simple_command);
+		dup2(stdout_backup, STDOUT_FILENO);
+		close(stdout_backup);
 		return (env->exit_code == 0);
 	}
 	if (pipeline->next)
 		pipe(pipex->fd);
-	executor_simple_command(pipeline->simple_command, pipex);
+	executor_simple_command(env, pipeline->simple_command, pipex);
 	if (pipeline->next)
 		executor_pipeline(env, pipeline->next, pipex);
 	while (i < pipex->count)

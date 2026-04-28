@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:46:50 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 03:14:11 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 08:18:41 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,14 @@
 
 void	add_expanded_args(t_simple_command *cmd, char *token, int *j)
 {
-	char	**split;
-	char	**new_args;
-	int		k;
-	int		len;
-
-	split = ft_split(token, ' ');
-	len = 0;
-	while (split && split[len])
-		len++;
-	new_args = ft_calloc(*j + len + 1, sizeof(char *));
-	k = -1;
-	while (++k < *j)
-		new_args[k] = cmd->args[k];
-	k = -1;
-	while (++k < len)
-	{
-		if (*j == 0 && k == 0)
-			cmd->cmd = ft_strdup(split[k]);
-		new_args[*j + k] = ft_strdup(split[k]);
-	}
-	free(cmd->args);
-	cmd->args = new_args;
-	*j += len;
-	free_tokens(split);
+	if (!token)
+		return ;
+	// 첫 번째 인자라면 cmd 이름으로도 저장
+	if (*j == 0)
+		cmd->cmd = ft_strdup(token);
+	// ft_split으로 쪼개지 말고, 토큰을 통째로 배열에 저장!
+	cmd->args[*j] = ft_strdup(token);
+	(*j)++;
 }
 
 static char	*get_next_word(char *s, int *i)

@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 16:41:42 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 07:21:31 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 11:29:38 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,17 @@ void	expand_env(char **line, t_info_env *env)
 	state = 0;
 	while ((*line)[i])
 	{
+		if ((*line)[i] == '\\' && (*line)[i + 1])
+		{
+			res = append_char(res, (*line)[i++]);
+			res = append_char(res, (*line)[i++]);
+			continue ;
+		}
 		update_quote_state((*line)[i], &state);
 		if ((*line)[i] == '$' && !(state & 1))
 			i = handle_dollar(&res, *line, i, env);
 		else
-		{
-			res = append_char(res, (*line)[i]);
-			i++;
-		}
+			res = append_char(res, (*line)[i++]);
 	}
 	free(*line);
 	*line = res;
@@ -99,6 +102,12 @@ void	remove_quotes(char *line)
 	state = 0;
 	while (line[i])
 	{
+		if (line[i] == '\\' && line[i + 1 ] && state != 1)
+		{
+			i++; 
+			line[j++] = line[i++];
+			continue ;
+		}
 		prev_state = state;
 		update_quote_state(line[i], &state);
 		if (state != prev_state)

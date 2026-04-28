@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 17:38:13 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 02:25:17 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/28 23:11:22 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
-void	builin_handler(t_info_env *env, t_simple_command *simple_command)
+void	builtin_handler(t_info_env *env, t_simple_command *simple_command)
 {
 	if (ft_strcmp(simple_command->cmd, "pwd") == 0)
 		mini_pwd(env);

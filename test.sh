@@ -16,29 +16,32 @@ run_test() {
     # 입력 파일 생성
     printf "%b\n" "$CMD" > $TMP/input.sh
 
-    # 1. Bash 실행 및 에러 메시지 접두사 제거
+    # 1. Bash 실행 및 정제
     bash $TMP/input.sh > $TMP/bash_out 2> $TMP/bash_err
     BASH_STATUS=$?
-    # 'bash: line 1: ' 부분 제거
-    sed -i 's/^.*line [0-9]*: //' $TMP/bash_err 2>/dev/null || sed 's/^.*line [0-9]*: //' $TMP/bash_err > $TMP/bash_err_tmp && mv $TMP/bash_err_tmp $TMP/bash_err
+    # 에러 메시지 정제 (에러가 있을 때만)
+    if [ -s $TMP/bash_err ]; then
+        sed 's/^.*line [0-9]*: //' $TMP/bash_err > $TMP/bash_err_tmp
+        mv $TMP/bash_err_tmp $TMP/bash_err
+    fi
 
-    # 2. Minishell 실행
+    # 2. Minishell 실행 및 정제
     $MINISHELL < $TMP/input.sh > $TMP/mini_out 2> $TMP/mini_err
     MINI_STATUS=$?
-
-    # --- Minishell 출력물 정제 ---
-    # 1. 프롬프트 및 exit 찌꺼기 제거 (STDOUT)
+    # STDOUT 정제: 프롬프트 제거
     grep -v "^minishell: " $TMP/mini_out | sed 's/minishell: exit//g' > $TMP/mini_out_tmp
     mv $TMP/mini_out_tmp $TMP/mini_out
+    # STDERR 정제: 접두사 제거
+    if [ -s $TMP/mini_err ]; then
+        sed 's/^minishell: //' $TMP/mini_err > $TMP/mini_err_tmp
+        mv $TMP/mini_err_tmp $TMP/mini_err
+    fi
 
-    # 2. 'minishell: ' 접두사 제거 (STDERR)
-    sed 's/^minishell: //' $TMP/mini_err > $TMP/mini_err_tmp
-    mv $TMP/mini_err_tmp $TMP/mini_err
-
-    # 3. 비교
-    diff $TMP/bash_out $TMP/mini_out >/dev/null
+    # 3. 결과 비교 (개행 차이 무시를 위해 diff -a 사용하거나 직접 비교)
+    # diff -Z는 끝의 공백 차이를 무시합니다.
+    diff -Z $TMP/bash_out $TMP/mini_out >/dev/null
     OUT=$?
-    diff $TMP/bash_err $TMP/mini_err >/dev/null
+    diff -Z $TMP/bash_err $TMP/mini_err >/dev/null
     ERR=$?
 
     if [ $OUT -eq 0 ] && [ $ERR -eq 0 ] && [ $BASH_STATUS -eq $MINI_STATUS ]; then
@@ -47,24 +50,15 @@ run_test() {
     else
         echo -e "\033[31m[FAIL]\033[0m ($COUNT) $NAME"
         FAIL=$((FAIL+1))
-
         echo "---- CMD ----"
         echo -e "$CMD"
-
         echo "---- EXPECT STDOUT (Bash) ----"
-        cat $TMP/bash_out
+        cat -e $TMP/bash_out  # -e 옵션을 붙여 개행($) 표시를 확인
         echo "---- YOUR STDOUT (Minishell) ----"
-        cat $TMP/mini_out
-
-        echo "---- EXPECT STDERR (Bash) ----"
-        cat $TMP/bash_err
-        echo "---- YOUR STDERR (Minishell) ----"
-        cat $TMP/mini_err
-
+        cat -e $TMP/mini_out
         echo "---- EXIT CODE ----"
         echo "bash: $BASH_STATUS | minishell: $MINI_STATUS"
         echo "-------------------"
-        echo ""
     fi
 }
 

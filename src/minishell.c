@@ -6,13 +6,14 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 15:02:03 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 02:32:12 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/28 22:01:06 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "env.h"
 #include "parsing.h"
+#include "quote.h"
 
 int	g_signo;
 
@@ -32,7 +33,8 @@ int	is_only_whitespace(char *line)
 
 static int	handle_line(t_info_env *env, char *line)
 {
-	t_command_line	*cmd;
+	t_command_line	*command_line;
+	char			*working_line;
 
 	if (g_signo != 0)
 	{
@@ -41,12 +43,19 @@ static int	handle_line(t_info_env *env, char *line)
 	}
 	if (is_only_whitespace(line))
 		return (0);
-	if (*line)
-		add_history(line);
-	cmd = parsing_command_line(env, &line);
-	if (cmd)
-		executor_command_line(env, cmd);
-	free_command_line(cmd);
+	working_line = ft_strdup(line);
+	check_quote(&working_line, env);
+	if (!working_line)
+		return (1);
+	command_line = parsing_command_line(env, &working_line);
+	if (*working_line)
+		add_history(working_line);
+	if (command_line)
+		executor_command_line(env, command_line);
+	else
+		return (0);
+	free_command_line(command_line);
+	free(working_line);
 	return (1);
 }
 

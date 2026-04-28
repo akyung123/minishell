@@ -6,23 +6,12 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 13:01:33 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 02:50:38 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 11:28:27 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 #include "quote.h"
-
-static int	chk_quote(char q)
-{
-	if (q == '\'')
-		return (1);
-	else if (q == '\"')
-		return (1);
-	else if (q == '`')
-		return (1);
-	return (0);
-}
 
 static int	get_padded_len(char *line)
 {
@@ -35,12 +24,18 @@ static int	get_padded_len(char *line)
 	state = 0;
 	while (line[i])
 	{
+		if (line[i] == '\\' && line[i + 1])
+		{
+			len += 2;
+			i += 2;
+			continue ;
+		}
 		update_quote_state(line[i], &state);
 		if (!state && (line[i] == '<' || line[i] == '>'))
 		{
 			len += 2;
 			if (line[i + 1] == line[i])
-				len += (++i * 0) + 1;
+				len ++;
 			len++;
 		}
 		else
@@ -76,10 +71,7 @@ static char	*add_space_around_redir(char *line)
 		return (NULL);
 	while (line[++i])
 	{
-		if (!chk_quote(line[i]))
-			state = 1;
-		else
-			state = 0;
+		update_quote_state(line[i], &state);
 		if (!state && (line[i] == '<' || line[i] == '>'))
 			insert_redir_space(space, line, &i, &j);
 		else
