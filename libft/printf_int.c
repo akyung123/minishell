@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 02:13:41 by akkim             #+#    #+#             */
-/*   Updated: 2025/12/13 17:28:39 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 02:24:45 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ft_intlen(int num)
 }
 
 int	ft_printf_int_width(int width, int pad)
-{	
+{
 	int	count;
 
 	count = width;

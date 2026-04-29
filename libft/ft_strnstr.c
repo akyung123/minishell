@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akkim <2004924@donga.ac.kr>                +#+  +:+       +#+        */
+/*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 14:08:50 by akkim             #+#    #+#             */
-/*   Updated: 2025/04/01 14:11:56 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 08:00:05 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 char	*ft_strnstr(const char *str, const char *to_find, size_t len)
@@ -27,7 +28,7 @@ char	*ft_strnstr(const char *str, const char *to_find, size_t len)
 				i++;
 			if (*(to_find + i) == '\0')
 				return ((char *)str);
-		}	
+		}
 		str++;
 		len--;
 	}

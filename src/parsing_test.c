@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 16:23:46 by akkim             #+#    #+#             */
-/*   Updated: 2026/03/23 19:47:35 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 02:33:15 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,10 @@
 void	test_redirect(t_redirect *redirect)
 {
 	if (!redirect)
-	return ;
+		return ;
 	printf(">> redirect <<");
 	printf("type : %s\n", redirect->type);
 	printf("filename : %s\n", redirect->filename);
-	test_redirect(redirect->next);
 }
 
 // simple_command test function

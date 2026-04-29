@@ -1,26 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mini_env.c                                         :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/07 18:59:32 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 02:03:39 by akkim            ###   ########.fr       */
+/*   Created: 2026/04/26 22:40:21 by akkim             #+#    #+#             */
+/*   Updated: 2026/04/27 02:23:10 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	mini_env(t_info_env *env)
+void	sigint_handler(int signo)
 {
-	t_env	*e;
-
-	e = env->head;
-	while (e->next)
+	if (signo == SIGINT)
 	{
-		ft_printf("%s=%s\n", e->key, e->value);
-		e = e->next;
+		ft_printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		g_signo = 130;
 	}
-	env->exit_code = 0;
+}
+
+void	set_signal(void)
+{
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	set_terminal_print_off(void)
+{
+	struct termios	term;
+
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~(ECHOCTL);
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }

@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:19 by akkim             #+#    #+#             */
-/*   Updated: 2026/03/27 16:02:20 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 08:36:48 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,32 +40,41 @@ char	*find_next_operator(char *line)
 	return (NULL);
 }
 
+static void	handle_operator(t_command_line *cmd, char *line,
+	char *comm, t_info_env *env)
+{
+	char	*tmp;
+
+	cmd->comm_oper = comm[0];
+	tmp = ft_substr(line, 0, comm - line);
+	cmd->pipeline = parsing_pipeline(env, tmp);
+	free(tmp);
+	tmp = ft_strdup(comm + 2);
+	cmd->next = parsing_command_line(env, &tmp);
+	free(tmp);
+}
+
 t_command_line	*parsing_command_line(t_info_env *env, char **line)
 {
-	t_command_line	*command_line;
-	char			*tmp;
+	t_command_line	*cmd;
 	char			*comm;
 
-	if (!line)
+	if (!line || !*line)
 		return (NULL);
-	command_line = malloc(sizeof(t_command_line));
-	if (!command_line)
-		return (NULL);
-	command_line->next = 0;
-	command_line->comm_oper = 0;
-	check_quote(line);
-	comm = find_next_operator(*line);
-	if (comm != 0)
+	if (check_syntax_error(*line))
 	{
-		command_line->comm_oper = comm[0];
-		tmp = ft_substr(*line, 0, comm - (*line));
-		command_line->pipeline = parsing_pipeline(env, tmp);
-		free(tmp);
-		tmp = ft_strdup(comm + 2);
-		command_line->next = parsing_command_line(env, &tmp);
-		free(tmp);
+		env->exit_code = 2;
+		return (NULL);
 	}
+	cmd = malloc(sizeof(t_command_line));
+	if (!cmd)
+		return (NULL);
+	cmd->next = NULL;
+	cmd->comm_oper = 0;
+	comm = find_next_operator(*line);
+	if (comm != NULL)
+		handle_operator(cmd, *line, comm, env);
 	else
-		command_line->pipeline = parsing_pipeline(env, ft_strdup(*line));
-	return (command_line);
+		cmd->pipeline = parsing_pipeline(env, ft_strdup(*line));
+	return (cmd);
 }

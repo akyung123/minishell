@@ -6,32 +6,17 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:11 by akkim             #+#    #+#             */
-/*   Updated: 2026/03/27 16:01:42 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/27 06:36:20 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-void	free_tokens(char **tokens)
-{
-	int	i;
-
-	if (!tokens)
-		return ;
-	i = 0;
-	while (tokens[i])
-	{
-		free(tokens[i]);
-		i++;
-	}
-	free(tokens);
-}
-
 // redirect 찾기
 int	is_redir(char *token)
 {
-	if (ft_strcmp(token, ">") == 0 || ft_strcmp(token, "<") == 0 ||
-		ft_strcmp(token, ">>") == 0 || ft_strcmp(token, "<<") == 0)
+	if (!ft_strcmp(token, ">") || !ft_strcmp(token, "<")
+		|| !ft_strcmp(token, ">>") || !ft_strcmp(token, "<<"))
 		return (1);
 	return (0);
 }
@@ -62,85 +47,19 @@ int	check_syntax(char **tokens)
 	return (1);
 }
 
-// 리다이렉션 노드를 생성하고 연결하는 함수 (예시)
-static void	add_redir_node(t_redirect **list, char *type, char *file)
-{
-	t_redirect	*new;
-	t_redirect	*tmp;
-
-	new = malloc(sizeof(t_redirect));
-	if (!new)
-		return ;
-	new->type = ft_strdup(type);
-	new->filename = ft_strdup(file);
-	new->next = NULL;
-	if (!*list)
-		*list = new;
-	else
-	{
-		tmp = *list;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
-	}
-}
-
-static int	count_args(char **tokens)
+void	free_tokens(char **tokens)
 {
 	int	i;
-	int	count;
 
 	if (!tokens)
-		return (0);
+		return ;
 	i = 0;
-	count = 0;
 	while (tokens[i])
 	{
-		if (is_redir(tokens[i]))
-		{
-			if (tokens[i + 1])
-				i += 2;
-			else
-				i++;
-		}
-		else
-		{
-			count++;
-			i++;
-		}
+		free(tokens[i]);
+		i++;
 	}
-	return (count);
-}
-
-t_simple_command	*build_cmd_struct(char **tokens)
-{
-	t_simple_command	*cmd;
-	int					i;
-	int					j;
-
-	cmd = ft_calloc(1, sizeof(t_simple_command));
-	if (!cmd)
-		return (NULL);
-	cmd->args = malloc(sizeof(char *) * (count_args(tokens) + 1));
-	i = 0;
-	j = 0;
-	while (tokens[i])
-	{
-		if (is_redir(tokens[i]))
-		{
-			if (j == 0)
-				add_redir_node(&(cmd->pre_red), tokens[i], tokens[i + 1]);
-			else
-				add_redir_node(&(cmd->suff_red), tokens[i], tokens[i + 1]);
-			i += 2;
-		}
-		else
-			cmd->args[j++] = ft_strdup(tokens[i++]);
-	}
-	cmd->args[j] = NULL;
-	if (j > 0)
-		cmd->cmd = ft_strdup(cmd->args[0]);
-	return (cmd);
+	free(tokens);
 }
 
 // ' '를 추가 후, 토큰화 -> 문법 검사 필요!
@@ -150,17 +69,18 @@ t_simple_command	*parsing_simple_command(t_info_env *env, char *line)
 	t_simple_command	*simple_command;
 	char				**tokens;
 
+	(void)env;
 	if (!line)
 		return (NULL);
-	simple_command = malloc(sizeof(simple_command));
-	if (!simple_command)
-		return (NULL);
 	tokens = tokenize_line(line);
+	if (!tokens)
+		return (NULL);
 	if (!check_syntax(tokens))
 	{
 		free_tokens(tokens);
 		return (NULL);
 	}
-	simple_command = build_cmd_struct(tokens);
+	simple_command = build_cmd_struct(tokens, env);
+	free_tokens(tokens);
 	return (simple_command);
 }
