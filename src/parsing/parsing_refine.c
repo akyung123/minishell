@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 16:41:42 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 11:29:38 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/29 13:46:32 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,13 @@ static int	handle_dollar(char **res, char *line, int i, t_info_env *env)
 	if (line[++i] == '?')
 	{
 		val = ft_itoa(env->exit_code);
+		*res = ft_strjoin_free(*res, val);
+		free(val);
+		return (i + 1);
+	}
+	if (line[i] == '$')
+	{
+		val = ft_itoa(getpid());
 		*res = ft_strjoin_free(*res, val);
 		free(val);
 		return (i + 1);

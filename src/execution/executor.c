@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 18:43:07 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 07:57:27 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/29 14:00:41 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,15 @@ int	executor_command_line(t_info_env *env, t_command_line *command_line)
 	{
 		if (stat)
 			executor_command_line(env, command_line->next);
+		else
+			executor_command_line(env, command_line->next->next);
 	}
 	else if (command_line->comm_oper == '|')
 	{
 		if (!stat)
 			executor_command_line(env, command_line->next);
+		else
+			executor_command_line(env, command_line->next->next);
 	}
 	return (1);
 }

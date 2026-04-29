@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 15:34:25 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 02:43:14 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/29 13:55:09 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	check_invalid_operator(char *line, int i)
 
 	if (line[i] == '|')
 	{
+		if (line[i + 1] == '|')
+			return (0);
 		next = skip_spaces(line, i + 1);
 		if (line[next] == '|' || line[next] == '\0')
 			return (print_unexpected_token(line, next));
