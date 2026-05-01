@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:53:27 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 03:50:40 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 04:05:25 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,12 @@ static void	remove_quotes_only(char **line)
 	state = 0;
 	while (str[++i[0]])
 	{
+		if (str[i[0]] == '\\' && str[i[0] + 1] && state != 1)
+		{
+			i[0]++;
+			new[i[1]++] = str[i[0]];
+			continue ;
+		}
 		prev = state;
 		update_quote_state(str[i[0]], &state);
 		if (state == prev)
@@ -64,7 +70,6 @@ static t_redirect	*handle_redir_tokens(char **tokens, int *i, t_info_env *env)
 	flag = 0;
 	if (ft_strcmp(tokens[*i], "<<") == 0)
 	{
-		printf("flag eof : %s\n", tokens[*i + 1]);
 		if (tokens[*i + 1][0] == '\"')
 			flag = 1;
 		remove_quotes_only(&tokens[*i + 1]);
