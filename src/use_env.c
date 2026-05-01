@@ -6,12 +6,35 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 15:46:19 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 02:22:58 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/01 22:53:46 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "env.h"
+
+t_env	*find_env_all(t_info_env *env, char *key)
+{
+	t_env	*node;
+
+	node = find_env_node(env->head, key);
+	if (node)
+		return (node);
+	return (find_env_node(env->hide_head, key));
+}
+
+char	*get_env_val_all(t_info_env *env, char *key)
+{
+	t_env	*node;
+
+	node = find_env_all(env, key);
+	if (node)
+		return (node->value);
+	node = find_env_node(env->hide_head, key);
+	if (node)
+		return (node->value);
+	return (NULL);
+}
 
 // find node by key
 t_env	*find_env_node(t_env *head, char *key)

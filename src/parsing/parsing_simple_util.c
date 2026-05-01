@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 13:01:33 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 11:28:27 by akkim            ###   ########.fr       */
+/*   Updated: 2026/04/29 15:21:30 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	get_padded_len(char *line)
 	state = 0;
 	while (line[i])
 	{
-		if (line[i] == '\\' && line[i + 1])
+		if (line[i] == '\\' && line[i + 1] && state != 1)
 		{
 			len += 2;
 			i += 2;
@@ -71,6 +71,12 @@ static char	*add_space_around_redir(char *line)
 		return (NULL);
 	while (line[++i])
 	{
+		if (line[i] == '\\' && line[i + 1] && state != 1)
+		{
+			space[j++] = line[i++];
+			space[j++] = line[i];
+			continue ;
+		}
 		update_quote_state(line[i], &state);
 		if (!state && (line[i] == '<' || line[i] == '>'))
 			insert_redir_space(space, line, &i, &j);

@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 17:38:13 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/28 23:11:22 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 03:20:41 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,15 @@ void	builtin_handler(t_info_env *env, t_simple_command *simple_command)
 	else if (ft_strcmp(simple_command->cmd, "echo") == 0)
 		mini_echo(env, simple_command->args);
 	else if (ft_strcmp(simple_command->cmd, "export") == 0)
-		mini_export(env, simple_command->args[1]);
+	{
+		mini_export(env, simple_command->args);
+		update_envp_array(env);
+	}
 	else if (ft_strcmp(simple_command->cmd, "unset") == 0)
-		mini_unset(env, simple_command->args[1]);
+	{
+		mini_unset(env, simple_command->args);
+		update_envp_array(env);
+	}
 	else if (ft_strcmp(simple_command->cmd, "cd") == 0)
 		mini_cd(env, simple_command->args[1]);
 	else if (ft_strcmp(simple_command->cmd, "exit") == 0)

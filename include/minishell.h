@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:28:09 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/28 22:42:32 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 03:20:38 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <signal.h>
 # include <termios.h>
 
+typedef struct l_pipex t_pipex;
+
 typedef struct l_env
 {
 	char			*key;
@@ -34,20 +36,23 @@ typedef struct l_env
 typedef struct l_info_env
 {
 	t_env	*head;
+	t_env	*hide_head;
 	char	**envp;
 	int		exit_code;
+	t_pipex	*pipex;
 }		t_info_env;
 
 extern int	g_signo;
 
 void	init_env(t_info_env *env, char **envp);
 char	*get_env_val(t_env *head, char *key);
+char	*get_env_val_all(t_info_env *env, char *key);
 
 // built-in function
 void	mini_pwd(t_info_env *env);
 void	mini_env(t_info_env *env);
-void	mini_export(t_info_env *env, char *str);
-void	mini_unset(t_info_env *env, char *key);
+void	mini_export(t_info_env *env, char **args);
+void	mini_unset(t_info_env *env, char **args);
 void	mini_cd(t_info_env *env, char *path);
 void	mini_exit(t_info_env *env, char **code);
 void	mini_echo(t_info_env *env, char **str);
@@ -56,5 +61,8 @@ int		is_builtin(char *cmd);
 
 void	set_terminal_print_off(void);
 void	set_signal(void);
+
+void	update_envp_array(t_info_env *env);
+void	update_last_arg(t_info_env *env, char *last_arg);
 
 #endif

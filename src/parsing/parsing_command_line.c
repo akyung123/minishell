@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:19 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 08:36:48 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 02:18:23 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,8 @@ static void	handle_operator(t_command_line *cmd, char *line,
 	cmd->comm_oper = comm[0];
 	tmp = ft_substr(line, 0, comm - line);
 	cmd->pipeline = parsing_pipeline(env, tmp);
-	free(tmp);
 	tmp = ft_strdup(comm + 2);
 	cmd->next = parsing_command_line(env, &tmp);
-	free(tmp);
 }
 
 t_command_line	*parsing_command_line(t_info_env *env, char **line)

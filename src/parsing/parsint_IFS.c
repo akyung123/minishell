@@ -1,34 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   parsint_IFS.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/01 21:01:55 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/29 16:29:30 by akkim            ###   ########.fr       */
+/*   Created: 2026/05/01 23:10:26 by akkim             #+#    #+#             */
+/*   Updated: 2026/05/01 23:42:19 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
+#include "parsing.h"
 
-char	*ft_strdup(char *src)
+char	*get_ifs_value(t_info_env *env)
 {
-	size_t	i;
-	char	*dest;
+	char	*ifs;
 
+	ifs = get_env_val_all(env, "IFS");
+	if (!ifs)
+		return (" \t\n");
+	return (ifs);
+}
+
+int	is_ifs_char(char c, char *ifs)
+{
+	int	i;
+
+	if (!ifs)
+		return (0);
 	i = 0;
-	while (src[i])
-		i++;
-	dest = malloc((i + 1) * sizeof(char));
-	if (dest == NULL)
-		return (NULL);
-	i = 0;
-	while (src[i])
+	while (ifs[i])
 	{
-		dest[i] = src[i];
+		if (c == ifs[i])
+			return (1);
 		i++;
 	}
-	dest[i] = '\0';
-	return (dest);
+	return (0);
 }
