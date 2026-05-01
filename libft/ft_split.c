@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 14:32:46 by akkim             #+#    #+#             */
-/*   Updated: 2025/12/29 00:55:35 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 03:10:32 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ char	**ft_split(char const *s, char c)
 	int		j;
 	int		words;
 
+	if (!s)
+		return (NULL);
 	words = count_word(s, c);
 	str = (char **)malloc((words + 1) * sizeof(char *));
 	if (!str)

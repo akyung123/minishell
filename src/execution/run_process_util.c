@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 07:49:00 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 08:00:34 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 03:13:02 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static char	*find_path(t_pipex *pipex, char *cmd)
 	char	*path;
 
 	i = 0;
+	if (!pipex->paths)
+		return (NULL);
 	while (pipex->paths[i])
 	{
 		path = ft_strjoin(pipex->paths[i], "/");
@@ -40,9 +42,9 @@ void	cmd_error(t_pipex *pipex, char **cmd)
 	if (cmd && cmd[0])
 		ft_putstr_fd(cmd[0], 2);
 	ft_putstr_fd(": command not found\n", 2);
-	free_split(cmd);
-	free_split(pipex->paths);
-	free(pipex);
+	if (pipex->cmd_line)
+		free_command_line(pipex->cmd_line);
+	free_pipex(pipex);
 	exit(127);
 }
 
@@ -66,14 +68,35 @@ void	run_execve(t_pipex *pipex, t_simple_command *simple)
 	if (execve(simple->cmd, simple->args, pipex->envp) == -1)
 	{
 		perror(simple->cmd);
-		exit(1);
+		exit(127);
 	}
 }
 
-void	run_cmd(t_pipex *pipex, t_simple_command *simple)
+void	check_is_directory(char *cmd)
 {
+	struct stat	path_stat;
+
+	if (stat(cmd, &path_stat) == 0)
+	{
+		if (S_ISDIR(path_stat.st_mode))
+		{
+			ft_putstr_fd(cmd, 2);
+			ft_putstr_fd(": Is a directory\n", 2);
+			exit(126);
+		}
+	}
+}
+
+void	run_cmd(t_info_env *env, t_pipex *pipex, t_simple_command *simple)
+{
+	if (is_builtin(simple->cmd))
+	{
+		builtin_handler(env, simple);
+		exit (0);
+	}
 	if (!simple->cmd || !*simple->cmd || !simple->args)
 		cmd_error(pipex, simple->args);
+	check_is_directory(simple->cmd);
 	if (ft_strchr(simple->args[0], '/'))
 	{
 		if (access(simple->cmd, X_OK) != 0)
@@ -86,5 +109,7 @@ void	run_cmd(t_pipex *pipex, t_simple_command *simple)
 			cmd_error(pipex, simple->args);
 	}
 	simple->args[0] = simple->cmd;
+	update_last_arg(env, simple->cmd);
+	pipex->envp = env->envp;
 	run_execve(pipex, simple);
 }

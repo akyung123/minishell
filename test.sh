@@ -37,8 +37,7 @@ run_test() {
         mv $TMP/mini_err_tmp $TMP/mini_err
     fi
 
-    # 3. 결과 비교 (개행 차이 무시를 위해 diff -a 사용하거나 직접 비교)
-    # diff -Z는 끝의 공백 차이를 무시합니다.
+    # 3. 결과 비교
     diff -Z $TMP/bash_out $TMP/mini_out >/dev/null
     OUT=$?
     diff -Z $TMP/bash_err $TMP/mini_err >/dev/null
@@ -53,7 +52,7 @@ run_test() {
         echo "---- CMD ----"
         echo -e "$CMD"
         echo "---- EXPECT STDOUT (Bash) ----"
-        cat -e $TMP/bash_out  # -e 옵션을 붙여 개행($) 표시를 확인
+        cat -e $TMP/bash_out
         echo "---- YOUR STDOUT (Minishell) ----"
         cat -e $TMP/mini_out
         echo "---- EXIT CODE ----"
@@ -63,10 +62,10 @@ run_test() {
 }
 
 echo "============================="
-echo "🔥 MINISHELL 100 CASES TEST"
+echo "🔥 MINISHELL COMPREHENSIVE TEST"
 echo "============================="
 
-# 1. ECHO & BASIC (1-15)
+# 1. ECHO & BASIC
 run_test "Echo hello" "echo hello"
 run_test "Echo -n" "echo -n hello"
 run_test "Echo -n-n" "echo -n -n hello"
@@ -83,7 +82,7 @@ run_test "Echo -n empty" "echo -n"
 run_test "Double echo" "echo hello\necho world"
 run_test "Basic /bin/ls" "/bin/ls"
 
-# 2. QUOTES (16-30)
+# 2. QUOTES
 run_test "Single Quote" "echo 'hello world'"
 run_test "Double Quote" 'echo "hello world"'
 run_test "Mixed 1" "echo \"'hello'\""
@@ -94,13 +93,13 @@ run_test "Empty Double" 'echo ""'
 run_test "Quotes with spaces" "echo '  abc  '"
 run_test "Quotes in path" "ls '.'"
 run_test "Quote concat" "echo 'hello'\"world\""
-run_test "Quote $ expansion" 'echo "$USER"'
-run_test "Single $ expansion" "echo '\$USER'"
-run_test "Escaped quote?" "echo \"\\\"\"" # 과제 범위 외이나 테스트
+run_test "Quote \$ expansion" 'echo "$USER"'
+run_test "Single \$ expansion" "echo '\$USER'"
+run_test "Escaped quote?" "echo \"\\\"\""
 run_test "Multiple empty quotes" "echo ''\"\"''"
 run_test "Quote inside word" "echo hel'lo' wor\"ld\""
 
-# 3. EXPANSION & $? (31-45)
+# 3. EXPANSION & $?
 run_test "Expand USER" "echo \$USER"
 run_test "Expand PWD" "echo \$PWD"
 run_test "Expand SHLVL" "echo \$SHLVL"
@@ -109,15 +108,15 @@ run_test "Expand with text" "echo \$USER_is_here"
 run_test "Exit status 0" "ls\necho \$?"
 run_test "Exit status cmd not found" "nosuchcmd\necho \$?"
 run_test "Exit status fail" "ls /nosuchfile\necho \$?"
-run_test "Multiple $?" "ls\necho \$?\nls /fail\necho \$?"
+run_test "Multiple \$?" "ls\necho \$?\nls /fail\necho \$?"
 run_test "Expand in double quotes" "echo \"hello \$USER\""
-run_test "Expand $? in quotes" "echo \"exit: \$?\""
+run_test "Expand \$? in quotes" "echo \"exit: \$?\""
 run_test "Expansion concat" "echo \$USER\$TERM"
 run_test "Expansion with special char" "echo \$USER!"
-run_test "Expansion $0?" "echo \$0"
-run_test "Expansion $$?" "echo \$\$"
+run_test "Expansion \$0?" "echo \$0"
+run_test "Expansion \$\$?" "echo \$\$"
 
-# 4. BUILT-INS (46-65)
+# 4. BUILT-INS
 run_test "CD .." "cd ..\npwd"
 run_test "CD /" "cd /\npwd"
 run_test "CD home" "cd\npwd"
@@ -136,10 +135,10 @@ run_test "PWD with args" "pwd hello"
 run_test "CD non-existent" "cd /blahblah"
 run_test "Export invalid key" "export 123VAR=test"
 run_test "Unset non-existent" "unset NON_EXISTENT"
-run_test "CD minus" "cd -" # 지원 여부에 따라 결과 다를 수 있음
+run_test "CD minus" "cd -" 
 run_test "Export append?" "export VAR=a\nexport VAR+=b\necho \$VAR"
 
-# 5. REDIRECTIONS (66-80)
+# 5. REDIRECTIONS
 run_test "Redir Out >" "echo hello > f1\ncat f1"
 run_test "Redir Append >>" "echo a > f1\necho b >> f1\ncat f1"
 run_test "Redir In <" "echo world > f1\ncat < f1"
@@ -156,7 +155,7 @@ run_test "Here-doc empty" "cat << EOF\nEOF"
 run_test "Redir filename with quote" "echo test > 'file with space'\ncat 'file with space'"
 run_test "Redir In/Out complex" "cat < f1 > f2 << EOF\nheredoc\nEOF"
 
-# 6. PIPES (81-90)
+# 6. PIPES
 run_test "Pipe simple" "ls | grep test"
 run_test "Pipe multiple" "echo hello | cat | cat | wc -c"
 run_test "Pipe with builtin" "env | grep USER | wc -l"
@@ -168,7 +167,7 @@ run_test "Pipe cat" "echo hello | cat"
 run_test "Pipe grep" "ls -l | grep .c"
 run_test "Pipe with export" "export A=1 | echo \$A"
 
-# 7. BONUS: LOGIC & WILDCARD (91-100)
+# 7. BONUS: LOGIC & WILDCARD (기존)
 run_test "Logic AND success" "ls && echo OK"
 run_test "Logic AND fail" "ls /fail && echo OK"
 run_test "Logic OR success" "ls || echo NO"
@@ -180,10 +179,37 @@ run_test "Wildcard in dir" "ls src/*"
 run_test "Logic with parens" "(ls /fail || echo Handled) && echo Next"
 run_test "Complex Logic" "ls && echo a || echo b && echo c"
 
+# 8. EDGE & EVALUATION CASES (참고사이트 기반 추가)
+run_test "Empty input" " "
+run_test "Tab input" "\t"
+run_test "Echo invalid flag" "echo -nnnnnnnm hello"
+run_test "Echo flag end" "echo hello -n"
+run_test "Exit large number" "exit 999999999999999999999"
+run_test "Quotes parsing edge" "e''\"\"c'h'\"o\" hi"
+run_test "Quote expansion edge 1" "echo \"'\$USER'\""
+run_test "Quote expansion edge 2" "echo '\"\$USER\"'"
+run_test "Pipe invalid cmd status" "aaaaa | echo \$?"
+run_test "Return value math" "ls /nofile\nexpr \$? + \$?"
+run_test "PATH Unset" "unset PATH\nls"
+run_test "PATH Export" "unset PATH\nexport PATH=/bin\nls"
+run_test "Cmd execution via env" "export TEST=\"ls -a\"\n\$TEST"
+run_test "Middle Redirection" "touch f2\nls > f1 -a < f2 -l\ncat f1"
+run_test "Heredoc multiple redirects" "cat << EOF > f1 > f2\nhello\nEOF\ncat f1\ncat f2"
+
+# 9. IFS (Internal Field Separator) CASES
+run_test "IFS default behavior" "export VAR=\"a b   c\"\necho \$VAR"
+run_test "IFS custom char split" "export IFS=\":\"\nexport VAR=\"a:b:c\"\necho \$VAR"
+run_test "IFS ignore split inside quotes" "export IFS=\":\"\nexport VAR=\"a:b:c\"\necho \"\$VAR\""
+run_test "IFS empty (no split)" "export IFS=\"\"\nexport VAR=\"a b c\"\necho \$VAR"
+run_test "IFS unset (default behavior)" "unset IFS\nexport VAR=\"a b   c\"\necho \$VAR"
+run_test "IFS with multiple variables" "export IFS=\"x\"\nexport VAR1=\"axb\"\nexport VAR2=\"cxd\"\necho \$VAR1 \$VAR2"
+run_test "IFS command args split" "export IFS=\"/\"\nexport VAR=\"ls/-l\"\n\$VAR"
+
 echo ""
 echo "============================="
 echo "📊 RESULT"
 echo "TOTAL: $COUNT | PASS: $PASS | FAIL: $FAIL"
 echo "============================="
 
-rm -rf $TMP f1 f2
+# 테스트용 임시 파일 삭제
+rm -rf $TMP f1 f2 no_perm test_dir 'file with space' outfile

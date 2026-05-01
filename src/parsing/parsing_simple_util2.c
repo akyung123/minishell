@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:46:50 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 08:18:41 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/01 23:19:34 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,25 @@
 
 void	add_expanded_args(t_simple_command *cmd, char *token, int *j)
 {
-	if (!token)
+	char	**new_args;
+	int		i;
+
+	if (!token || token[0] == '\0')
 		return ;
-	// 첫 번째 인자라면 cmd 이름으로도 저장
+	new_args = ft_calloc(*j + 2, sizeof(char *));
+	if (!new_args)
+		return ;
+	i = 0;
+	while (i < *j)
+	{
+		new_args[i] = cmd->args[i];
+		i++;
+	}
+	new_args[*j] = ft_strdup(token);
+	free(cmd->args);
+	cmd->args = new_args;
 	if (*j == 0)
 		cmd->cmd = ft_strdup(token);
-	// ft_split으로 쪼개지 말고, 토큰을 통째로 배열에 저장!
-	cmd->args[*j] = ft_strdup(token);
 	(*j)++;
 }
 
@@ -88,6 +100,7 @@ char	**split_quotes(char *s)
 	while (j < words)
 	{
 		split[j] = get_next_word(s, &i);
+		//remove_quotes(split[j]);
 		j++;
 	}
 	split[j] = NULL;

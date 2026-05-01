@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 15:02:03 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/28 22:01:06 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 02:17:32 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ static int	handle_line(t_info_env *env, char *line)
 	if (!working_line)
 		return (1);
 	command_line = parsing_command_line(env, &working_line);
-	if (*working_line)
-		add_history(working_line);
 	if (command_line)
 		executor_command_line(env, command_line);
 	else
@@ -66,6 +64,8 @@ void	shell_loop(t_info_env *env)
 	while (1)
 	{
 		line = readline("minishell: ");
+		if (line)
+			add_history(line);
 		if (!line)
 		{
 			printf("exit\n");
@@ -83,6 +83,9 @@ void	shell_loop(t_info_env *env)
 void	shell_cleanup(t_info_env *env)
 {
 	all_free_env(env->head);
+	all_free_env(env->hide_head);
+	if (env->envp)
+		free_split(env->envp);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -96,5 +99,6 @@ int	main(int argc, char **argv, char **envp)
 	set_signal();
 	shell_loop(&env);
 	shell_cleanup(&env);
+	rl_clear_history();
 	return (0);
 }

@@ -6,37 +6,56 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 19:04:34 by akkim             #+#    #+#             */
-/*   Updated: 2026/02/10 20:14:18 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 03:23:03 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "env.h"
 
-static int	chk_key(t_info_env *env, char *key)
+// export와 동일, 공통으로 두는 거 추천
+static int	is_valid_id(char *key)
 {
-	if (ft_isalpha(key[0]) || key[0] == '_')
+	int	i;
+
+	if (!key || !key[0] || !(ft_isalpha(key[0]) || key[0] == '_'))
+		return (0);
+	i = 1;
+	while (key[i])
 	{
-		env->exit_code = 1;
-		return (1);
+		if (!(ft_isalnum(key[i]) || key[i] == '_'))
+			return (0);
+		i++;
 	}
-	return (0);
+	return (1);
 }
 
 // remove node for key and free node
-void	mini_unset(t_info_env *env, char *key)
+void	mini_unset(t_info_env *env, char **args)
 {
-	t_env	*node;
+	int	i;
 
-	if (!key)
+	if (!args || !args[1])
 	{
 		env->exit_code = 0;
 		return ;
 	}
-	if (!chk_key(env, key))
-		return ;
-	node = find_env_node(env->head, key);
-	if (node != NULL)
-		remove_env(env, key);
-	return ;
+	env->exit_code = 0;
+	i = 1;
+	while (args[i])
+	{
+		if (!is_valid_id(args[i]))
+		{
+			ft_putstr_fd("minishell: unset: `", 2);
+			ft_putstr_fd(args[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			env->exit_code = 1;
+		}
+		else
+		{
+			if (find_env_node(env->head, args[i]))
+				remove_env(env, args[i]);
+		}
+		i++;
+	}
 }

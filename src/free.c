@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 11:04:14 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 02:04:57 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 02:11:37 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,22 @@
 
 void	free_redirection(t_redirect *redir)
 {
+	t_redirect	*tmp;
+	t_redirect	*tmp2;
+
 	if (!redir)
 		return ;
-	if (redir->filename)
-		free(redir->filename);
-	if (redir->type)
-		free(redir->type);
-	free(redir);
+	tmp = redir;
+	while (tmp)
+	{
+		if (tmp->filename)
+			free(tmp->filename);
+		if (tmp->type)
+			free(tmp->type);
+		tmp2 = tmp;
+		tmp = tmp->next;
+		free(tmp2);
+	}
 }
 
 // 2. 단순 명령어(args 배열 등) 해제
@@ -43,8 +52,9 @@ void	free_simple_command(t_simple_command *simple)
 	}
 	if (simple->cmd)
 		free(simple->cmd);
-	free_redirection(simple->pre_red);
-	free_redirection(simple->suff_red);
+	if (simple->line)
+		free(simple->line);
+	free_redirection(simple->red);
 	free(simple);
 }
 
