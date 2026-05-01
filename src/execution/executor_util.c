@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 07:52:11 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 03:33:43 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 06:49:07 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	here_doc(t_info_env *env, t_redirect *redirect)
 
 	fd = open(".here_doc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	eof = ft_strjoin(redirect->filename, "\n");
-	write(1, "> ", 2);
+	if (isatty(STDIN_FILENO))
+		write(1, "> ", 2);
 	while (1)
 	{
 		line = get_next_line(0);
@@ -44,7 +45,8 @@ int	here_doc(t_info_env *env, t_redirect *redirect)
 		}
 		write(fd, line, ft_strlen(line));
 		free(line);
-		ft_putstr_fd("> ", 2);
+		if (isatty(STDIN_FILENO))
+			ft_putstr_fd("> ", 2);
 	}
 	close(fd);
 	fd = open(".here_doc", O_RDONLY);
@@ -130,7 +132,7 @@ int	executor_pipeline(t_info_env *env, t_pipeline *pipeline, t_pipex *pipex)
 	tmp = pipeline->simple_command;
 	pipeline->simple_command = new;
 	free_simple_command(tmp);
-	if (!pipeline->next && is_builtin(pipeline->simple_command->cmd))
+	if (is_root && !pipeline->next && is_builtin(pipeline->simple_command->cmd))
 	{
 		setting_command(env, pipex, pipeline->simple_command);
 		set_process(pipex);

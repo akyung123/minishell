@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:19 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 02:18:23 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 05:15:08 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,17 @@ char	*find_next_operator(char *line)
 static void	handle_operator(t_command_line *cmd, char *line,
 	char *comm, t_info_env *env)
 {
-	char	*tmp;
+	char	*left_str;
+	char	*right_str;
+	char	*right_base;
 
 	cmd->comm_oper = comm[0];
-	tmp = ft_substr(line, 0, comm - line);
-	cmd->pipeline = parsing_pipeline(env, tmp);
-	tmp = ft_strdup(comm + 2);
-	cmd->next = parsing_command_line(env, &tmp);
+	left_str = ft_substr(line, 0, comm - line);
+	cmd->pipeline = parsing_pipeline(env, left_str);
+	right_str = ft_strdup(comm + 2);
+	right_base = right_str;
+	cmd->next = parsing_command_line(env, &right_str);
+	free(right_base);
 }
 
 t_command_line	*parsing_command_line(t_info_env *env, char **line)

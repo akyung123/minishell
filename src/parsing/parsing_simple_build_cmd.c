@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:53:27 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 04:05:25 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 06:39:35 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static t_redirect	*create_redir(char *type, char *file)
 {
 	t_redirect	*new;
 
-	new = malloc(sizeof(t_redirect));
+	new = ft_calloc(1, sizeof(t_redirect));
 	if (!new)
 		return (NULL);
 	new->type = ft_strdup(type);
@@ -67,11 +67,11 @@ static t_redirect	*handle_redir_tokens(char **tokens, int *i, t_info_env *env)
 	t_redirect	*red;
 	int			flag;
 
-	flag = 0;
+	flag = 1;
 	if (ft_strcmp(tokens[*i], "<<") == 0)
 	{
-		if (tokens[*i + 1][0] == '\"')
-			flag = 1;
+		if (ft_strchr(tokens[*i + 1], '\'') || ft_strchr(tokens[*i + 1], '\"'))
+			flag = 0;
 		remove_quotes_only(&tokens[*i + 1]);
 		red = create_redir(tokens[*i], tokens[*i + 1]);
 		red->flag = flag;

@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:36:56 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/29 13:51:40 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 05:52:50 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,27 @@ void	update_quote_state(char c, int *state)
 }
 
 // 입력받아서 합치는 함수
-static int	plus_line(char **line, t_info_env *env)
+static int	plus_line(char **line, t_info_env *env, int state)
 {
 	char	*new;
 	char	*tmp1;
 	char	*tmp2;
 
-	new = readline("> ");
+	if (isatty(STDIN_FILENO))
+		write(1, "> ", 2);
+	new = get_next_line(0);
+	(void)env;
 	if (!new)
 	{
-		env->exit_code = 2;
-		ft_putstr_fd("minishell: unexpected EOF while looking for matching quote\n", 2);
+		ft_putstr_fd("minishell: unexpected EOF while looking for matching ", 2);
+		if (state & 1)
+			ft_putstr_fd("`''\n", 2);
+		else if (state & 2)
+			ft_putstr_fd("`\"'\n", 2);
+		ft_putstr_fd("minishell: syntax error: unexpected end of file\n", 2);
 		free(*line);
 		*line = NULL;
-		return (0);
+		exit(2);
 	}
 	tmp1 = ft_strjoin(*line, "\n");
 	if (!tmp1)
@@ -77,7 +84,7 @@ void	check_quote(char **line, t_info_env *env)
 		}
 		if (state == 0)
 			break ;
-		if (!plus_line(line, env))
+		if (!plus_line(line, env, state))
 			return ;
 	}
 }

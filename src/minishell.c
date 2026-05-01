@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 15:02:03 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 02:17:32 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 06:50:07 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	shell_cleanup(t_info_env *env)
 int	main(int argc, char **argv, char **envp)
 {
 	t_info_env	env;
+	int			exit_code;
 
 	(void)argc;
 	(void)argv;
@@ -98,7 +99,8 @@ int	main(int argc, char **argv, char **envp)
 	set_terminal_print_off();
 	set_signal();
 	shell_loop(&env);
+	exit_code = env.exit_code;
 	shell_cleanup(&env);
 	rl_clear_history();
-	return (0);
+	return (exit_code);
 }

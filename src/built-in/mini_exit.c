@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 17:49:48 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/01 22:25:07 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 06:16:35 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,22 @@ void	mini_exit(t_info_env *env, char **code)
 	int			err;
 	long long	exit_code;
 
-	write(2, "exit\n", 5);
+	if (isatty(STDIN_FILENO))
+		write(2, "exit\n", 5);
 	if (code[1] == NULL || !code)
 		free_exit(env, env->exit_code);
 	err = 0;
 	exit_code = ft_atoll_check(code[1], &err);
 	if (err)
 	{
-		ft_putstr_fd("bash: exit: ", 2);
+		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(code[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		free_exit(env, 255);
 	}
 	if (code[2] != NULL)
 	{
-		ft_putstr_fd("bash: exit: too many arguments\n", 2);
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		env->exit_code = 1;
 		return ;
 	}
