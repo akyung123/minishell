@@ -13,7 +13,6 @@
 #include "minishell.h"
 #include "env.h"
 
-// export와 동일, 공통으로 두는 거 추천
 static int	is_valid_id(char *key)
 {
 	int	i;
@@ -45,12 +44,7 @@ void	mini_unset(t_info_env *env, char **args)
 	while (args[i])
 	{
 		if (!is_valid_id(args[i]))
-		{
-			// ft_putstr_fd("minishell: unset: `", 2);
-			// ft_putstr_fd(args[i], 2);
-			// ft_putstr_fd("': not a valid identifier\n", 2);
 			env->exit_code = 0;
-		}
 		else
 		{
 			if (find_env_node(env->head, args[i]))
