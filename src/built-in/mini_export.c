@@ -57,23 +57,6 @@ static void	set_env_value(t_info_env *env, char *key, char *value, int append)
 		env_add_back(&env->head, new_env_node(key, value));
 }
 
-static char	*trim_quotes(char *str)
-{
-	int		len;
-	char	*new_str;
-
-	if (!str)
-		return (NULL);
-	len = ft_strlen(str);
-	if (len >= 2 && ((str[0] == '\"' && str[len - 1] == '\"')
-			|| (str[0] == '\'' && str[len - 1] == '\'')))
-	{
-		new_str = ft_substr(str, 1, len - 2);
-		return (new_str);
-	}
-	return (ft_strdup(str));
-}
-
 // Only KEY
 static void	handle_no_equal(t_info_env *env, char *str)
 {
