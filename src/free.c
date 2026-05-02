@@ -6,12 +6,29 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 11:04:14 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 02:11:37 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 23:07:57 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
+
+// all free
+void	all_free_env(t_env *head)
+{
+	t_env	*tmp;
+
+	while (head)
+	{
+		tmp = head->next;
+		if (head->key)
+			free(head->key);
+		if (head->value)
+			free(head->value);
+		free(head);
+		head = tmp;
+	}
+}
 
 void	free_redirection(t_redirect *redir)
 {

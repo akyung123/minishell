@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:28:09 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 02:19:47 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 23:11:13 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,9 @@ char	*get_env_val(t_env *head, char *key);
 
 // free all env
 void	all_free_env(t_env *head);
+
+// update envp
+void	update_envp_array(t_info_env *env);
+void	update_shlvl(t_info_env *env);
 
 #endif
