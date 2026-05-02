@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 07:52:11 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 06:49:07 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 19:07:18 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	here_doc(t_info_env *env, t_redirect *redirect)
 			ft_putstr_fd("')\n", 2);
 			break ;
 		}
-		if (redirect->flag != 1)
+		if (redirect->flag == 1)
 			expand_env(&line, env);
 		if (!ft_strncmp(line, eof, ft_strlen(eof)))
 		{
@@ -129,6 +129,8 @@ int	executor_pipeline(t_info_env *env, t_pipeline *pipeline, t_pipex *pipex)
 		return (0);
 	refine_line(&(pipeline->simple_command->line), env);
 	new = parsing_simple_command(env, pipeline->simple_command->line);
+	if (!new)
+		return (pipex->pipeline_status);
 	tmp = pipeline->simple_command;
 	pipeline->simple_command = new;
 	free_simple_command(tmp);

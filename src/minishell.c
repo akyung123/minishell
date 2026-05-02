@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 15:02:03 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 06:50:07 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 17:34:05 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ static int	handle_line(t_info_env *env, char *line)
 	t_command_line	*command_line;
 	char			*working_line;
 
+	if (!line)
+		return (0);
 	if (g_signo != 0)
 	{
 		env->exit_code = g_signo;
@@ -60,15 +62,25 @@ static int	handle_line(t_info_env *env, char *line)
 void	shell_loop(t_info_env *env)
 {
 	char	*line;
+	char	*trim_line;
 
 	while (1)
 	{
-		line = readline("minishell: ");
+		if (isatty(STDIN_FILENO))
+			line = readline("minishell: ");
+		else
+		{
+			line = get_next_line(0);
+			trim_line = ft_strtrim(line, "\n");
+			free(line);
+			line = trim_line;
+		}
 		if (line)
 			add_history(line);
 		if (!line)
 		{
-			printf("exit\n");
+			if (isatty(STDIN_FILENO))
+				ft_printf("exit\n");
 			break ;
 		}
 		if (!handle_line(env, line))

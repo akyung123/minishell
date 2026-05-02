@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:53:27 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 06:39:35 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 18:56:51 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,14 @@ static void	maximun_hd_exit(t_info_env *env, char **tokens)
 	exit(2);
 }
 
+ // i[0]=tokens, i[1]=args(j), i[2]=red_num
 t_simple_command	*build_cmd_struct(char **tokens, t_info_env *env)
 {
 	t_simple_command	*cmd;
 	t_redirect			*red_tmp;
 	t_redirect			*new;
 	char				**split_words;
-	int					i[3]; // i[0]=tokens, i[1]=args(j), i[2]=red_num
+	int					i[3];
 	int					k;
 
 	if (!(cmd = ft_calloc(1, sizeof(t_simple_command))))

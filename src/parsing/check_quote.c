@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:36:56 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 05:52:50 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 18:33:18 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ static int	plus_line(char **line, t_info_env *env, int state)
 	char	*tmp1;
 	char	*tmp2;
 
-	if (isatty(STDIN_FILENO))
-		write(1, "> ", 2);
-	new = get_next_line(0);
+	// if (isatty(STDIN_FILENO))
+	// 	write(1, "> ", 2);
+	// new = get_next_line(0);
+	new = readline("> ");
 	(void)env;
 	if (!new)
 	{

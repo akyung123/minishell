@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 18:59:32 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 06:10:32 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 15:55:03 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	mini_env(t_info_env *env)
 	while (e->value)
 	{
 		ft_printf("%s=%s\n", e->key, e->value);
+		if (!e->next)
+			break ;
 		e = e->next;
 	}
 	env->exit_code = 0;

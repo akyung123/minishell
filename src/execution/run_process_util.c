@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 07:49:00 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 06:24:24 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 18:45:49 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,20 @@ static char	*find_path(t_pipex *pipex, char *cmd)
 // 0 : cmd x, 1: fake cmd
 void	cmd_error(t_pipex *pipex, char **cmd)
 {
+	char	*error_msg;
+
 	if (cmd && cmd[0])
-		ft_putstr_fd(cmd[0], 2);
-	ft_putstr_fd(": command not found\n", 2);
+	{
+		error_msg = ft_strjoin(cmd[0], ": command not found\n");
+		if (error_msg)
+		{
+			ft_putstr_fd(error_msg, 2);
+			free(error_msg);
+		}
+	}
+	free_pipex(pipex);
 	if (pipex->cmd_line)
 		free_command_line(pipex->cmd_line);
-	free_pipex(pipex);
 	exit(127);
 }
 
@@ -127,9 +135,6 @@ void	run_cmd(t_info_env *env, t_pipex *pipex, t_simple_command *simple)
 		free(simple->cmd);
 		simple->cmd = tmp_path;
 	}
-	// if (simple->args[0])
-	// 	free(simple->args[0]);
-	// simple->args[0] = simple->cmd;
 	update_last_arg(env, simple->cmd);
 	pipex->envp = env->envp;
 	run_execve(pipex, simple);

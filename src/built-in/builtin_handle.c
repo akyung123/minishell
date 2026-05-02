@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 17:38:13 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 03:20:41 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 19:10:51 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	is_builtin(char *cmd)
 
 void	builtin_handler(t_info_env *env, t_simple_command *simple_command)
 {
+	env->exit_code = 0;
 	if (ft_strcmp(simple_command->cmd, "pwd") == 0)
 		mini_pwd(env);
 	else if (ft_strcmp(simple_command->cmd, "env") == 0)

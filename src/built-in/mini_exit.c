@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 17:49:48 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 06:16:35 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 16:13:06 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	mini_exit(t_info_env *env, char **code)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(code[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
-		free_exit(env, 255);
+		free_exit(env, 2);
 	}
 	if (code[2] != NULL)
 	{

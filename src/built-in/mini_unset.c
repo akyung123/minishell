@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 19:04:34 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 03:23:03 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/02 19:16:36 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ void	mini_unset(t_info_env *env, char **args)
 	{
 		if (!is_valid_id(args[i]))
 		{
-			ft_putstr_fd("minishell: unset: `", 2);
-			ft_putstr_fd(args[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			env->exit_code = 1;
+			// ft_putstr_fd("minishell: unset: `", 2);
+			// ft_putstr_fd(args[i], 2);
+			// ft_putstr_fd("': not a valid identifier\n", 2);
+			env->exit_code = 0;
 		}
 		else
 		{
