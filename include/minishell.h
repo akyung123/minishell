@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:28:09 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 14:46:39 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:03:39 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ char	*trim_quotes(char *str);
 
 int		is_builtin(char *cmd);
 
+// setting funcion in main
 void	set_terminal_print_off(void);
 void	set_signal(void);
 
@@ -73,7 +74,14 @@ void	update_last_arg(t_info_env *env, char *last_arg);
 
 void	shell_cleanup(t_info_env *env);
 
-// error 함수 모아두기
+// error
 int		print_unexpected_token(char *line, int idx);
+int		check_syntax_error(char *line);
+int		syntax_err_msg(char *token);
+
+// free
+void	free_command_line(t_command_line *cmd_line);
+void	free_simple_command(t_simple_command *simple);
+void	cmd_error(t_pipex *pipex, char **cmd);
 
 #endif

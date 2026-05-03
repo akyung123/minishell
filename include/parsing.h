@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 18:00:44 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 14:21:46 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:03:03 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct l_command_line
 	struct l_command_line	*next;
 }	t_command_line;
 
+// util
 char				*minishell_strrchr(const char *str, int ch);
 char				*ft_strstr(const char *haystack, const char *needle);
 
@@ -53,15 +54,7 @@ t_simple_command	*parsing_simple_command(t_info_env *env, char *line);
 char				**tokenize_line(char *line);
 t_simple_command	*build_cmd_struct(char **tokens, t_info_env *env);
 
-int					is_redir(char *token);
-
-void				test_command_line(t_command_line *command_line);
-int					executor_command_line(t_info_env *env,
-						t_command_line	*command_line);
-int					pipeline(t_info_env *env, t_pipeline *pipeline);
-void				free_command_line(t_command_line *cmd_line);
-void				update_quote_state(char c, int *state);
-
+// free
 char				**free_split(char **str);
 char				*ft_strjoin_free(char *s1, char *s2);
 
@@ -70,10 +63,6 @@ void				builtin_handler(t_info_env *env,
 						t_simple_command *simple_command);
 void				expand_env(char **line, t_info_env *env);
 
-void				free_simple_command(t_simple_command *simple);
-void				cmd_error(t_pipex *pipex, char **cmd);
-
-void				remove_quotes_only(char **line);
 void				handle_redirection(t_simple_command	*cmd, char **tokens,
 						t_info_env *env, int *i);
 
