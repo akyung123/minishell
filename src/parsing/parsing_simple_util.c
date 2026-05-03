@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 13:01:33 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/29 15:21:30 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 13:27:11 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,22 @@ static int	get_padded_len(char *line)
 {
 	int	i;
 	int	len;
-	int	state;
+	int	st;
 
-	i = 0;
+	i = -1;
 	len = 0;
-	state = 0;
-	while (line[i])
+	st = 0;
+	while (line[++i])
 	{
-		if (line[i] == '\\' && line[i + 1] && state != 1)
+		if (line[i] == '\\' && line[i + 1] && st != 1 && ++i)
 		{
 			len += 2;
-			i += 2;
 			continue ;
 		}
-		update_quote_state(line[i], &state);
-		if (!state && (line[i] == '<' || line[i] == '>'))
-		{
-			len += 2;
-			if (line[i + 1] == line[i])
-				len ++;
-			len++;
-		}
-		else
-			len++;
-		i++;
+		update_quote_state(line[i], &st);
+		len++;
+		if (!st && (line[i] == '<' || line[i] == '>'))
+			len += 2 + (line[i + 1] == line[i]);
 	}
 	return (len);
 }
@@ -54,36 +46,42 @@ static void	insert_redir_space(char *space, char *line, int *i, int *j)
 	space[(*j)++] = ' ';
 }
 
-// 공백 추가 함수
-// 리디렉션 앞뒤에 공백이 없을 경우,  추가하여 split을 원활하게 돕는다.
-static char	*add_space_around_redir(char *line)
+static void	fill_redir_space(char *space, char *line)
 {
-	char		*space;
-	int			state;
-	int			i;
-	int			j;
+	int	i;
+	int	j;
+	int	st;
 
 	i = -1;
 	j = 0;
-	state = 0;
-	space = malloc(sizeof(char) * (get_padded_len(line)) + 1);
-	if (!space)
-		return (NULL);
+	st = 0;
 	while (line[++i])
 	{
-		if (line[i] == '\\' && line[i + 1] && state != 1)
+		if (line[i] == '\\' && line[i + 1] && st != 1 && ++i)
 		{
-			space[j++] = line[i++];
+			space[j++] = '\\';
 			space[j++] = line[i];
 			continue ;
 		}
-		update_quote_state(line[i], &state);
-		if (!state && (line[i] == '<' || line[i] == '>'))
+		update_quote_state(line[i], &st);
+		if (!st && (line[i] == '<' || line[i] == '>'))
 			insert_redir_space(space, line, &i, &j);
 		else
 			space[j++] = line[i];
 	}
 	space[j] = '\0';
+}
+
+// 공백 추가 함수
+// 리디렉션 앞뒤에 공백이 없을 경우,  추가하여 split을 원활하게 돕는다.
+static char	*add_space_around_redir(char *line)
+{
+	char	*space;
+
+	space = malloc(get_padded_len(line) + 1);
+	if (!space)
+		return (NULL);
+	fill_redir_space(space, line);
 	return (space);
 }
 

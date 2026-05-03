@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 14:32:46 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 03:10:32 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 13:33:23 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,25 +57,17 @@ static char	**free_split(char **str)
 	return (NULL);
 }
 
-char	**ft_split(char const *s, char c)
+static char	**fill_split(char **str, char const *s, char c, int words)
 {
-	char	**str;
-	int		i;
-	int		j;
-	int		words;
+	int	i;
+	int	j;
 
-	if (!s)
-		return (NULL);
-	words = count_word(s, c);
-	str = (char **)malloc((words + 1) * sizeof(char *));
-	if (!str)
-		return (NULL);
 	i = 0;
 	while (*s && i < words)
 	{
 		while (*s == c)
 			s++;
-		str[i] = (char *)malloc((len_word((char *)s, c) + 1) * sizeof(char));
+		str[i] = malloc((len_word((char *)s, c) + 1));
 		if (!str[i])
 			return (free_split(str));
 		j = 0;
@@ -86,4 +78,18 @@ char	**ft_split(char const *s, char c)
 	}
 	str[i] = NULL;
 	return (str);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**str;
+	int		words;
+
+	if (!s)
+		return (NULL);
+	words = count_word(s, c);
+	str = malloc((words + 1) * sizeof(char *));
+	if (!str)
+		return (NULL);
+	return (fill_split(str, s, c, words));
 }

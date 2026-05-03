@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 07:49:00 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 18:45:49 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 14:16:31 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,6 @@ static char	*find_path(t_pipex *pipex, char *cmd)
 	return (NULL);
 }
 
-// 0 : cmd x, 1: fake cmd
-void	cmd_error(t_pipex *pipex, char **cmd)
-{
-	char	*error_msg;
-
-	if (cmd && cmd[0])
-	{
-		error_msg = ft_strjoin(cmd[0], ": command not found\n");
-		if (error_msg)
-		{
-			ft_putstr_fd(error_msg, 2);
-			free(error_msg);
-		}
-	}
-	free_pipex(pipex);
-	if (pipex->cmd_line)
-		free_command_line(pipex->cmd_line);
-	exit(127);
-}
-
 void	path_error(t_pipex *pipex, char **cmd)
 {
 	if (cmd && cmd[0])
@@ -78,19 +58,6 @@ void	path_error(t_pipex *pipex, char **cmd)
 	exit(127);
 }
 
-void	run_execve(t_pipex *pipex, t_simple_command *simple)
-{
-	if (execve(simple->cmd, simple->args, pipex->envp) == -1)
-	{
-		ft_printf("cmd : %s\n args[0] : %s\n", simple->cmd, simple->args[0]);
-		perror(simple->cmd);
-		if (pipex->cmd_line)
-			free_command_line(pipex->cmd_line);
-		free_pipex(pipex);
-		exit(127);
-	}
-}
-
 void	check_is_directory(t_pipex *pipex, char *cmd)
 {
 	struct stat	path_stat;
@@ -109,19 +76,10 @@ void	check_is_directory(t_pipex *pipex, char *cmd)
 	}
 }
 
-void	run_cmd(t_info_env *env, t_pipex *pipex, t_simple_command *simple)
+static void	resolve_cmd_path(t_pipex *pipex, t_simple_command *simple)
 {
 	char	*tmp_path;
 
-	if (is_builtin(simple->cmd))
-	{
-		builtin_handler(env, simple);
-		shell_cleanup(env);
-		exit (0);
-	}
-	if (!simple->cmd || !*simple->cmd || !simple->args)
-		cmd_error(pipex, simple->args);
-	check_is_directory(pipex, simple->cmd);
 	if (ft_strchr(simple->args[0], '/'))
 	{
 		if (access(simple->cmd, X_OK) != 0)
@@ -135,6 +93,21 @@ void	run_cmd(t_info_env *env, t_pipex *pipex, t_simple_command *simple)
 		free(simple->cmd);
 		simple->cmd = tmp_path;
 	}
+}
+
+void	run_cmd(t_info_env *env, t_pipex *pipex,
+	t_simple_command *simple)
+{
+	if (is_builtin(simple->cmd))
+	{
+		builtin_handler(env, simple);
+		shell_cleanup(env);
+		exit(0);
+	}
+	if (!simple->cmd || !*simple->cmd || !simple->args)
+		cmd_error(pipex, simple->args);
+	check_is_directory(pipex, simple->cmd);
+	resolve_cmd_path(pipex, simple);
 	update_last_arg(env, simple->cmd);
 	pipex->envp = env->envp;
 	run_execve(pipex, simple);

@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:46:50 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/01 23:19:34 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 13:27:33 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ char	**split_quotes(char *s)
 	while (j < words)
 	{
 		split[j] = get_next_word(s, &i);
-		//remove_quotes(split[j]);
 		j++;
 	}
 	split[j] = NULL;

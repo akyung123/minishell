@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:28:09 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 12:21:43 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 14:46:39 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <signal.h>
 # include <termios.h>
 
-typedef struct l_pipex t_pipex;
+typedef struct l_pipex	t_pipex;
 
 typedef struct l_env
 {
@@ -40,7 +40,7 @@ typedef struct l_info_env
 	char	**envp;
 	int		exit_code;
 	t_pipex	*pipex;
-}		t_info_env;
+}	t_info_env;
 
 extern int	g_signo;
 
@@ -72,5 +72,8 @@ void	update_envp_array(t_info_env *env);
 void	update_last_arg(t_info_env *env, char *last_arg);
 
 void	shell_cleanup(t_info_env *env);
+
+// error 함수 모아두기
+int		print_unexpected_token(char *line, int idx);
 
 #endif

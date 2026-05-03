@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 17:13:05 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 01:19:17 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 14:16:45 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,19 @@ typedef struct l_pipex
 }	t_pipex;
 
 void	set_process(t_pipex *pipex);
-pid_t	run_process(t_info_env *env, t_pipex *piepx, t_simple_command *simple_command);
+void	setting_command(t_info_env *env, t_pipex *pipex,
+			t_simple_command *simple_command);
+pid_t	run_process(t_info_env *env, t_pipex *piepx,
+			t_simple_command *simple_command);
 void	run_cmd(t_info_env *env, t_pipex *pipex, t_simple_command *simple);
+void	run_execve(t_pipex *pipex, t_simple_command *simple);
 int		executor_pipeline(t_info_env *env,
 			t_pipeline *pipeline, t_pipex *pipex);
+int		exec_single_builtin(t_info_env *env, t_pipeline *pl, t_pipex *px);	
 
 void	free_pipex(t_pipex *pipex);
 void	set_pipex(t_info_env *env, t_pipex *pipex);
+
+int		here_doc(t_info_env *env, t_redirect *redirect);
 
 #endif

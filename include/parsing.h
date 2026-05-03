@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 18:00:44 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 02:06:13 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 14:21:46 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,15 @@ char				**free_split(char **str);
 char				*ft_strjoin_free(char *s1, char *s2);
 
 void				remove_quotes(char *line);
-void				builtin_handler(t_info_env *env, t_simple_command *simple_command);
+void				builtin_handler(t_info_env *env,
+						t_simple_command *simple_command);
 void				expand_env(char **line, t_info_env *env);
 
 void				free_simple_command(t_simple_command *simple);
+void				cmd_error(t_pipex *pipex, char **cmd);
+
+void				remove_quotes_only(char **line);
+void				handle_redirection(t_simple_command	*cmd, char **tokens,
+						t_info_env *env, int *i);
 
 #endif

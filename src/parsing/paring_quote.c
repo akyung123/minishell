@@ -6,30 +6,18 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 15:34:25 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 11:50:37 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 14:18:34 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "quote.h"
+#include "minishell.h"
 
 int	skip_spaces(char *line, int i)
 {
 	while (line[i] && line[i] == ' ')
 		i++;
 	return (i);
-}
-
-int	print_unexpected_token(char *line, int idx)
-{
-	char	token[3];
-
-	if (line[idx] == '\0')
-		return (syntax_err_msg("newline"));
-	ft_memset(token, 0, 3);
-	token[0] = line[idx];
-	if (line[idx + 1] && line[idx] == line[idx + 1])
-		token[1] = line[idx + 1];
-	return (syntax_err_msg(token));
 }
 
 int	get_op_len(char *line, int i)
