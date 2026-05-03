@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:46:50 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 13:27:33 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:12:34 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,6 @@ static int	count_words(char *s)
 	return (count);
 }
 
-// 공백기준으로 쪼개는 함수
-// but, ft_split과 다르게 "" 안의 공백은 무시해야함
 char	**split_quotes(char *s)
 {
 	char	**split;

@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 13:01:33 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 13:27:11 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:12:29 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ static void	fill_redir_space(char *space, char *line)
 	space[j] = '\0';
 }
 
-// 공백 추가 함수
-// 리디렉션 앞뒤에 공백이 없을 경우,  추가하여 split을 원활하게 돕는다.
 static char	*add_space_around_redir(char *line)
 {
 	char	*space;
@@ -85,8 +83,6 @@ static char	*add_space_around_redir(char *line)
 	return (space);
 }
 
-// 토큰화 함수
-// 내부에서 add_space_around_redir 후 ft_split 실행
 char	**tokenize_line(char *line)
 {
 	char	**tokens;

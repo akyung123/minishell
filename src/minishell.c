@@ -6,14 +6,12 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 15:02:03 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 14:44:56 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:15:52 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "env.h"
 #include "parsing.h"
-#include "quote.h"
 
 int	g_signo;
 

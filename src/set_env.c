@@ -6,16 +6,12 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 17:26:48 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 23:36:39 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:17:50 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "env.h"
-#include "execution.h"
-// env setting funtion for minishell
-// linked list
-// SHLVL nesting O
 
 t_env	*new_env_node(char *key, char *value)
 {

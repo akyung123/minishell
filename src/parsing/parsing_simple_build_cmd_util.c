@@ -6,14 +6,13 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:20:05 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 14:22:40 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:12:04 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "quote.h"
 #include "env.h"
 
-// 간단한 리다이렉션 생성 함수
 static t_redirect	*create_redir(char *type, char *file)
 {
 	t_redirect	*new;

@@ -6,12 +6,12 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 23:01:37 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 13:02:11 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:07:51 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "parsing.h"
+#include "execution.h"
 #include "quote.h"
 
 int	is_only_whitespace(char *line)

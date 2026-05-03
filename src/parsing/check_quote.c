@@ -6,13 +6,12 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:36:56 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 13:02:34 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:11:11 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "quote.h"
 
-// // 비트 마스크로 state update
 void	update_quote_state(char c, int *state)
 {
 	if (c == '\'' && !(*state & 2) && !(*state & 4))
@@ -36,7 +35,6 @@ static void	plus_line_error(int state, char **line)
 	exit(2);
 }
 
-// 입력받아서 합치는 함수
 static int	plus_line(char **line, t_info_env *env, int state)
 {
 	char	*new;
@@ -61,7 +59,6 @@ static int	plus_line(char **line, t_info_env *env, int state)
 	return (1);
 }
 
-//기본 체크 함수(parsing commnad에서 사용할 메인 함수)
 void	check_quote(char **line, t_info_env *env)
 {
 	int	i;

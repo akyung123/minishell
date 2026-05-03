@@ -6,15 +6,13 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:19 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 05:15:08 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:11:33 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "quote.h"
 #include "parsing.h"
 #include "minishell.h"
 
-// 현재 인덱스가 && 또는 || 인지 확인하는 함수
 int	is_logical_operator(char *line, int i)
 {
 	if (line[i] == '&' && line[i + 1] == '&')

@@ -6,13 +6,11 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 18:43:07 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 13:41:48 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:10:27 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "env.h"
-#include "parsing.h"
 #include "execution.h"
 
 void	free_pipex(t_pipex *pipex)

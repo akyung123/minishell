@@ -6,13 +6,12 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:59:11 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 03:36:18 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:12:50 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-// redirect 찾기
 int	is_redir(char *token)
 {
 	if (!ft_strcmp(token, ">") || !ft_strcmp(token, "<")
@@ -21,9 +20,6 @@ int	is_redir(char *token)
 	return (0);
 }
 
-// 문법 체크 함수
-// 파일명 x && 기호 뒤에 기호 오는 경우
-// $는 변경하고 `(백틱)은 실행시켜야함
 int	check_syntax(char **tokens)
 {
 	int	i;
@@ -62,7 +58,6 @@ void	free_tokens(char **tokens)
 	free(tokens);
 }
 
-// ' '를 추가 후, 토큰화 -> 문법 검사 필요!
 // <simple_command> ::= <cmd_name> <arguments_opt> <redirects_opt>
 t_simple_command	*parsing_simple_command(t_info_env *env, char *line)
 {

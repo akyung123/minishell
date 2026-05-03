@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 15:35:12 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 15:02:25 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:09:32 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int		validate_quotes(char *line);
 char	*ft_strjoin_free(char *s1, char *s2);
 char	*append_char(char *str, char c);
 void	restore_expanded_quotes(char *str);
+int		is_redir(char *token);
+void	remove_quotes_only(char **line);
 
 int		handle_ansi_c_quoting(char **res, char *line, int i);
 int		handle_dollar(char **res, char *str, t_info_env *env, int st);

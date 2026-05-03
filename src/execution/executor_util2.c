@@ -6,14 +6,11 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:02:56 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 14:14:27 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:10:13 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
-#include "parsing.h"
 #include "execution.h"
-#include "minishell.h"
 #include "quote.h"
 
 static void	read_here_doc(int fd, char *eof, t_info_env *env, t_redirect *rd)

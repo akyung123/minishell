@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:28:09 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 15:03:39 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:17:26 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@
 # include <signal.h>
 # include <termios.h>
 
-typedef struct l_pipex	t_pipex;
+typedef struct l_pipex			t_pipex;
+typedef struct l_command_line	t_command_line;
+typedef struct l_simple_command	t_simple_command;
 
 typedef struct l_env
 {
@@ -83,5 +85,8 @@ int		syntax_err_msg(char *token);
 void	free_command_line(t_command_line *cmd_line);
 void	free_simple_command(t_simple_command *simple);
 void	cmd_error(t_pipex *pipex, char **cmd);
+void	all_free_env(t_env *head);
+char	**free_split(char **str);
+char	*ft_strjoin_free(char *s1, char *s2);
 
 #endif

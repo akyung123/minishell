@@ -6,13 +6,11 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:18:53 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 14:18:37 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:13:09 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "env.h"
-#include "quote.h"
 #include "execution.h"
 
 int	print_unexpected_token(char *line, int idx)

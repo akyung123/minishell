@@ -6,11 +6,10 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:14:46 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 14:16:54 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:10:53 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
 #include "execution.h"
 #include "minishell.h"
 

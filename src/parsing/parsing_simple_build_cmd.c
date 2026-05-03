@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:53:27 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 14:22:44 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:12:20 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static void	fill_unquoted_str(char *new, char *str)
 	new[j] = '\0';
 }
 
-// 따옴표(껍데기)만 제거하는 전용 함수
 void	remove_quotes_only(char **line)
 {
 	char	*new;
