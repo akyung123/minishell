@@ -21,7 +21,7 @@
 - AI Reference: Generating test values during parsing tests
 - AI Reference: Writing shell scripts for testing
 
-#Features
+# Features
 - Built-in Commands
 	**Command		Description**
 	echo		Print arguments to standard output (-n flag supported)
@@ -41,7 +41,10 @@
 	||		Logical OR — execute next command only if previous failed (bonus)
 
 - Other Features
-Environment variable expansion — $VAR and $? (last exit status)
-Quote handling — single quotes preserve literal value; double quotes allow variable expansion
-Signal handling — Ctrl-C interrupts current process, Ctrl-D exits the shell, Ctrl-\ is ignored in interactive mode
-Interactive prompt with readline support and command history
+	-Environment variable expansion — $VAR and $? (last exit status)
+	-Quote handling — single quotes preserve literal value; double quotes allow variable expansion
+	-Signal handling — Ctrl-C interrupts current process, Ctrl-D exits the shell, Ctrl-\ is ignored in interactive mode
+	-Interactive prompt with readline support and command history
+	
+# How to Run Tests
+- Place the test files in the minishell directory and run: `test.sh`.
