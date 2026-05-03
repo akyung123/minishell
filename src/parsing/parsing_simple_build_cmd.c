@@ -6,12 +6,13 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:53:27 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 16:33:11 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 18:03:51 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "quote.h"
 #include "env.h"
+#include "execution.h"
 
 static void	fill_unquoted_str(char *new, char *str)
 {
@@ -59,6 +60,7 @@ void	handle_argument(t_simple_command *cmd,
 	int		k;
 	int		is_empty_before;
 
+	tokens[i[0]] = expand_tilde(tokens[i[0]], env);
 	refine_line(&tokens[i[0]], env);
 	split_words = ft_split(tokens[i[0]], '\x1F');
 	i[0]++;

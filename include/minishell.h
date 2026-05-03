@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:28:09 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 15:17:26 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 17:00:18 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct l_info_env
 extern int	g_signo;
 
 void	shell_loop(t_info_env *env);
+char	*read_line(t_info_env *env, char *s);
 
 void	init_env(t_info_env *env, char **envp);
 char	*get_env_val(t_env *head, char *key);

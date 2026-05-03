@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:02:56 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 15:53:16 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 19:18:27 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ static void	read_here_doc(int fd, char *eof, t_info_env *env, t_redirect *rd)
 			ft_putstr_fd("')\n", 2);
 			return ;
 		}
-		if (rd->flag == 1)
-			expand_env(&line, env);
 		if (!ft_strncmp(line, eof, ft_strlen(eof)))
 			break ;
+		if (rd->flag == 1)
+			expand_env(&line, env);
 		write(fd, line, ft_strlen(line));
 		free(line);
 	}
@@ -83,6 +83,7 @@ int	setting_command(t_info_env *env, t_pipex *pipex, t_simple_command *cmd)
 		if (fd == -1)
 		{
 			perror(tmp->filename);
+			env->exit_code = 1;
 			return (0);
 		}
 		if (tmp->type && (!ft_strcmp(tmp->type, "<<")

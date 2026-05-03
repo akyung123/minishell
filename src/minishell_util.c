@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 23:01:37 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 15:07:51 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 17:00:08 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,14 @@ static int	handle_line(t_info_env *env, char *line)
 	return (1);
 }
 
-char	*read_line(t_info_env *env)
+char	*read_line(t_info_env *env, char *s)
 {
 	char	*line;
 	char	*trim_line;
 
 	(void)env;
 	if (isatty(STDIN_FILENO))
-		line = readline("minishell: ");
+		line = readline(s);
 	else
 	{
 		line = get_next_line(0);
@@ -80,7 +80,7 @@ void	shell_loop(t_info_env *env)
 
 	while (1)
 	{
-		line = read_line(env);
+		line = read_line(env, "minishell: ");
 		if (line)
 			add_history(line);
 		if (!line)

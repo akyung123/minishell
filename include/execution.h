@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 17:13:05 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 15:53:35 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 17:33:52 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,7 @@ void	set_pipex(t_info_env *env, t_pipex *pipex);
 
 // heredoc
 int		here_doc(t_info_env *env, t_redirect *redirect);
+
+char	*expand_tilde(char *token, t_info_env *env);
 
 #endif

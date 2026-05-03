@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 07:52:11 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 16:43:27 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 19:24:14 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,28 @@ int	executor_simple_command(t_info_env *env,
 {
 	int		pid;
 
-	setting_command(env, pipex, simple_command);
+	if (!simple_command)
+	{
+		env->exit_code = 0;
+		return (-1);
+	}
+	if (!setting_command(env, pipex, simple_command))
+	{
+		if (pipex->in > 2)
+			close(pipex->in);
+		if (pipex->out > 2)
+			close(pipex->out);
+		if (pipex->fd[1] > 2)
+			close(pipex->fd[1]);
+		pipex->in = pipex->fd[0];
+		return (-1);
+	}
+	if (!simple_command->cmd || !simple_command->args ||
+		!simple_command->args[0])
+	{
+		env->exit_code = 0;
+		return (-1);
+	}
 	pid = run_process(env, pipex, simple_command);
 	pipex->pids[pipex->count] = pid;
 	pipex->count++;

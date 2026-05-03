@@ -6,12 +6,34 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 18:43:07 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 15:10:27 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 19:17:45 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "execution.h"
+#include "env.h"
+
+char	*expand_tilde(char *token, t_info_env *env)
+{
+	t_env	*home_node;
+	char	*home_path;
+	char	*new_token;
+
+	if (!token || token[0] != '~')
+		return (token);
+	if (token[1] == '\0' || token[1] == '/')
+	{
+		home_node = find_env_node(env->head, "HOME");
+		if (!home_node || !home_node->value)
+			return (token);
+		home_path = home_node->value;
+		new_token = ft_strjoin(home_path, token + 1);
+		free(token);
+		return (new_token);
+	}
+	return (token);
+}
 
 void	free_pipex(t_pipex *pipex)
 {

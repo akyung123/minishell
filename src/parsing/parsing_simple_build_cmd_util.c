@@ -6,12 +6,13 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:20:05 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 16:50:05 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 18:06:57 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "quote.h"
 #include "env.h"
+#include "execution.h"
 
 static t_redirect	*create_redir(char *type, char *file)
 {
