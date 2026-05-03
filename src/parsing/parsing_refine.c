@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 16:41:42 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 11:52:28 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 13:10:36 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,23 @@ char	*append_utf8(char *str, int cp)
 		str = append_char(str, (char)(0x80 | (cp & 0x3F)));
 	}
 	return (str);
+}
+
+void	restore_expanded_quotes(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return ;
+	while (str[i])
+	{
+		if (str[i] == 1)
+			str[i] = '\'';
+		else if (str[i] == 2)
+			str[i] = '\"';
+		i++;
+	}
 }
 
 static char	get_ansi_char(char c)
@@ -126,34 +143,37 @@ static void	append_expanded_val(char **res, char *val, t_info_env *env, int stat
 	free(val_dup);
 }
 
-static int	handle_dollar(char **res, char *line, int i, t_info_env *env, int state)
+static int	handle_dollar(char **res, char *str, t_info_env *env, int st)
 {
 	char	*name;
 	char	*val;
-	int		start;
+	int		len;
 
-	if (line[++i] == '?' || line[i] == '$')
+	if (str[1] == '?' || str[1] == '$')
 	{
-		if (line[i] == '?')
-			val = ft_itoa(env->exit_code);
-		else
-			val = ft_itoa(getpid());
-		append_expanded_val(res, val, env, state);
-		free(val);
-		return (i + 1);
+		val = (str[1] == '?') ? ft_itoa(env->exit_code) : ft_itoa(getpid());
+		append_expanded_val(res, val, env, st);
+		return (free(val), 2);
 	}
-	if (ft_isalnum(line[i]) || line[i] == '_')
+	if (ft_isalnum(str[1]) || str[1] == '_')
 	{
-		start = i;
-		while (line[i] && (ft_isalnum(line[i]) || line[i] == '_'))
-			i++;
-		name = ft_substr(line, start, i - start);
-		append_expanded_val(res, get_env_val_all(env, name), env, state);
-		free(name);
-		return (i);
+		len = 1;
+		while (str[len] && (ft_isalnum(str[len]) || str[len] == '_'))
+			len++;
+		name = ft_substr(str, 1, len - 1);
+		append_expanded_val(res, get_env_val_all(env, name), env, st);
+		return (free(name), len);
 	}
 	*res = append_char(*res, '$');
-	return (i);
+	return (1);
+}
+
+void	handle_esc_fallback(char **res, char c)
+{
+	if (!res)
+		return ;
+	*res = append_char(*res, '\\');
+	*res = append_char(*res, c);
 }
 
 int	handle_ansi_c_quoting(char **res, char *line, int i)
@@ -161,12 +181,11 @@ int	handle_ansi_c_quoting(char **res, char *line, int i)
 	char	c;
 
 	*res = append_char(*res, '\'');
-	i++;
-	while (line[i] && line[i] != '\'')
+	while (line[++i] && line[i] != '\'')
 	{
-		if (line[i] == '\\' && line[i + 1])
+		if (line[i] == '\\' && line[i + 1] && ++i)
 		{
-			c = get_ansi_char(line[++i]);
+			c = get_ansi_char(line[i]);
 			if (c)
 				*res = append_char(*res, c);
 			else if (line[i] == 'x')
@@ -176,19 +195,13 @@ int	handle_ansi_c_quoting(char **res, char *line, int i)
 			else if (line[i] == 'U')
 				*res = append_utf8(*res, parse_hex_escape(line, &i, 8));
 			else
-			{
-				*res = append_char(*res, '\\');
-				*res = append_char(*res, line[i]);
-			}
+				handle_esc_fallback(res, line[i]);
 		}
 		else
 			*res = append_char(*res, line[i]);
-		i++;
 	}
 	*res = append_char(*res, '\'');
-	if (line[i] == '\'')
-		i++;
-	return (i);
+	return (i + (line[i] == '\''));
 }
 
 void	expand_env(char **line, t_info_env *env)
@@ -197,27 +210,21 @@ void	expand_env(char **line, t_info_env *env)
 	int		i;
 	int		state;
 
-	if (!line || !(*line))
-		return ;
 	res = ft_strdup("");
 	i = 0;
 	state = 0;
-	while ((*line)[i])
+	while (line && *line && (*line)[i])
 	{
-		if ((*line)[i] == '\\' && (*line)[i + 1])
-		{
-			res = append_char(res, (*line)[i++]);
-			res = append_char(res, (*line)[i++]);
-			continue ;
-		}
 		update_quote_state((*line)[i], &state);
-		if ((*line)[i] == '$' && (*line)[i + 1] == '\'' && !state)
+		if ((*line)[i] == '\\' && (*line)[i + 1] && state != 1)
 		{
-			i = handle_ansi_c_quoting(&res, *line, i + 1);
-			continue ;
+			res = append_char(res, (*line)[i++]);
+			res = append_char(res, (*line)[i++]);
 		}
-		if ((*line)[i] == '$' && !(state & 1))
-			i = handle_dollar(&res, *line, i, env, state);
+		else if ((*line)[i] == '$' && (*line)[i + 1] == '\'' && !state)
+			i = handle_ansi_c_quoting(&res, *line, i + 1);
+		else if ((*line)[i] == '$' && !(state & 1))
+			i += handle_dollar(&res, *line + i, env, state);
 		else
 			res = append_char(res, (*line)[i++]);
 	}
@@ -231,7 +238,7 @@ void	remove_quotes(char *line)
 	int		i;
 	int		j;
 	int		state;
-	int		prev_state;
+	int		prev;
 
 	if (!line)
 		return ;
@@ -242,18 +249,15 @@ void	remove_quotes(char *line)
 	{
 		if (line[i] == '\\' && line[i + 1 ] && state != 1)
 		{
-			i++; 
-			line[j++] = line[i++];
-			continue ;
+			prev = state;
+			update_quote_state(line[i], &state);
+			if (line[i] == '\\' && line[i + 1] && state != 1 && ++i)
+				line[j++] = line[i++];
+			else if (state == prev)
+				line[j++] = line[i++];
+			else
+				i++;
 		}
-		prev_state = state;
-		update_quote_state(line[i], &state);
-		if (state != prev_state)
-		{
-			i++;
-			continue ;
-		}
-		line[j++] = line[i++];
 	}
 	line[j] = '\0';
 }

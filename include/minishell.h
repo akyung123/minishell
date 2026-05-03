@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:28:09 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 23:04:52 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 12:21:43 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,10 @@ void	mini_unset(t_info_env *env, char **args);
 void	mini_cd(t_info_env *env, char *path);
 void	mini_exit(t_info_env *env, char **code);
 void	mini_echo(t_info_env *env, char **str);
+
+// built-in util
+void	update_env_val(t_env *head, char *key, char *value);
+char	*trim_quotes(char *str);
 
 int		is_builtin(char *cmd);
 

@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:53:27 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 12:07:23 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 12:27:47 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,21 +98,51 @@ static void	maximun_hd_exit(t_info_env *env, char **tokens)
 	exit(2);
 }
 
-void	handle_redirection(int i, )
+void	handle_redirection(t_simple_command	*cmd, char **tokens, t_info_env *env, int *i)
 {
+	t_redirect			*new;
+	t_redirect			*last;
+
 	if (i[2]++ >= 16)
 		maximun_hd_exit(env, tokens);
+	new = handle_redir_tokens(tokens, &i[0], env);
+	if (!new)
+		return ;
+	if (!cmd->red)
+	{
+		cmd->red = new;
+	}
+	else
+	{
+		last = cmd->red;
+		while (last->next)
+			last = last->next;
+		last->next = new;
+	}
+}
+
+void	handle_argument(t_simple_command	*cmd, char **tokens, t_info_env *env, int *i)
+{
+	char	**split_words;
+	int		k;
+
+	refine_line(&tokens[i[0]], env);
+	split_words = ft_split(tokens[i[0]], '\x1F');
+	i[0]++;
+	k = 0;
+	while (split_words && split_words[k])
+	{
+		remove_quotes_only(&split_words[k]);
+		add_expanded_args(cmd, split_words[k++], &i[1]);
+	}
+	free_split(split_words);
 }
 
 // i[0]=tokens, i[1]=args(j), i[2]=red_num
 t_simple_command	*build_cmd_struct(char **tokens, t_info_env *env)
 {
 	t_simple_command	*cmd;
-	t_redirect			*red_tmp;
-	t_redirect			*new;
-	char				**split_words;
 	int					i[3];
-	int					k;
 
 	cmd = ft_calloc(1, sizeof(t_simple_command));
 	if (!cmd)
@@ -122,32 +152,9 @@ t_simple_command	*build_cmd_struct(char **tokens, t_info_env *env)
 	while (tokens[i[0]])
 	{
 		if (is_redir(tokens[i[0]]))
-		{
-			if (i[2]++ >= 16)
-				maximun_hd_exit(env, tokens);
-			new = handle_redir_tokens(tokens, &i[0], env);
-			if (new)
-			{
-				if (!cmd->red)
-					cmd->red = new;
-				else
-					red_tmp->next = new;
-				red_tmp = new;
-			}
-		}
+			handle_redirection(cmd, tokens, env, i);
 		else
-		{
-			refine_line(&tokens[i[0]], env);
-			split_words = ft_split(tokens[i[0]], '\x1F');
-			i[0]++;
-			k = 0;
-			while (split_words && split_words[k])
-			{
-				remove_quotes_only(&split_words[k]);
-				add_expanded_args(cmd, split_words[k++], &i[1]);
-			}
-			free_split(split_words);
-		}
+			handle_argument(cmd, tokens, env, i);
 	}
 	return (cmd);
 }

@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 18:31:59 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/01 21:43:20 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 13:01:54 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	set_process(t_pipex *pipex)
 		close(pipex->fd[0]);
 }
 
-pid_t	run_process(t_info_env *env, t_pipex *pipex, t_simple_command *simple_command)
+pid_t	run_process(t_info_env *env, t_pipex *pipex,
+	t_simple_command *simple_command)
 {
 	pid_t	pid;
 

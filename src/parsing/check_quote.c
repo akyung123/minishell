@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:36:56 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 18:33:18 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 13:02:34 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,19 @@ void	update_quote_state(char c, int *state)
 		*state ^= 4;
 }
 
+static void	plus_line_error(int state, char **line)
+{
+	ft_putstr_fd("minishell: unexpected EOF while looking for matching ", 2);
+	if (state & 1)
+		ft_putstr_fd("`''\n", 2);
+	else if (state & 2)
+		ft_putstr_fd("`\"'\n", 2);
+	ft_putstr_fd("minishell: syntax error: unexpected end of file\n", 2);
+	free(*line);
+	*line = NULL;
+	exit(2);
+}
+
 // 입력받아서 합치는 함수
 static int	plus_line(char **line, t_info_env *env, int state)
 {
@@ -30,23 +43,10 @@ static int	plus_line(char **line, t_info_env *env, int state)
 	char	*tmp1;
 	char	*tmp2;
 
-	// if (isatty(STDIN_FILENO))
-	// 	write(1, "> ", 2);
-	// new = get_next_line(0);
 	new = readline("> ");
 	(void)env;
 	if (!new)
-	{
-		ft_putstr_fd("minishell: unexpected EOF while looking for matching ", 2);
-		if (state & 1)
-			ft_putstr_fd("`''\n", 2);
-		else if (state & 2)
-			ft_putstr_fd("`\"'\n", 2);
-		ft_putstr_fd("minishell: syntax error: unexpected end of file\n", 2);
-		free(*line);
-		*line = NULL;
-		exit(2);
-	}
+		plus_line_error(state, line);
 	tmp1 = ft_strjoin(*line, "\n");
 	if (!tmp1)
 	{
