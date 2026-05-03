@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 16:41:42 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/02 04:39:10 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 11:52:28 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,15 +258,13 @@ void	remove_quotes(char *line)
 	line[j] = '\0';
 }
 
+// process_backticks(line, env);
+// remove before eval
 void	refine_line(char **line, t_info_env *env)
 {
 	if (!line || !(*line))
 		return ;
-	//process_backticks(line, env);
 	expand_env(line, env);
 	if (*line)
-	{
-		//remove_quotes(*line);
 		restore_expanded_quotes(*line);
-	}
 }

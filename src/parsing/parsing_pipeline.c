@@ -6,14 +6,11 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:57:54 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/30 04:53:31 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 11:51:07 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-// a << 1 << 2 << 3 인경우 처리해야한다
-// a << 1 | << 2 | << 3으로 보는 것이 좋음
 
 // p_op : pipe operator
 t_pipeline	*parsing_pipeline(t_info_env *env, char *line)
