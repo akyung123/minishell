@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:46:50 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 15:12:34 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 16:31:12 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	add_expanded_args(t_simple_command *cmd, char *token, int *j)
 	char	**new_args;
 	int		i;
 
-	if (!token || token[0] == '\0')
+	if (!token)
 		return ;
 	new_args = ft_calloc(*j + 2, sizeof(char *));
 	if (!new_args)
@@ -43,13 +43,13 @@ static char	*get_next_word(char *s, int *i)
 	int	state;
 
 	state = 0;
-	while (s[*i] == ' ')
+	while (s[*i] == ' ' || s[*i] == '\t')
 		(*i)++;
 	start = *i;
 	while (s[*i])
 	{
 		update_quote_state(s[*i], &state);
-		if (s[*i] == ' ' && !state)
+		if ((s[*i] == ' ' || s[*i] == '\t') && !state)
 			break ;
 		(*i)++;
 	}
@@ -67,14 +67,14 @@ static int	count_words(char *s)
 	state = 0;
 	while (s[i])
 	{
-		while (s[i] == ' ')
+		while (s[i] == ' ' || s[i] == '\t')
 			i++;
 		if (s[i])
 			count++;
 		while (s[i])
 		{
 			update_quote_state(s[i], &state);
-			if (s[i] == ' ' && !state)
+			if ((s[i] == ' ' || s[i] == '\t') && !state)
 				break ;
 			i++;
 		}

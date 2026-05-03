@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:20:05 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 15:12:04 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 16:50:05 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static t_redirect	*handle_redir_tokens(char **tokens, int *i, t_info_env *env)
 	else
 	{
 		refine_line(&tokens[*i + 1], env);
+		remove_quotes_only(&tokens[*i + 1]);
 		if (ft_strcmp(tokens[*i], "<") == 0)
 			red = create_redir(tokens[*i], tokens[*i + 1]);
 		else if (ft_strcmp(tokens[*i], ">") == 0

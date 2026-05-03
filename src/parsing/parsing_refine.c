@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 16:41:42 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 14:38:20 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 16:32:26 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	restore_expanded_quotes(char *str)
 	}
 }
 
-// 따옴표 제거 함수
 void	remove_quotes(char *line)
 {
 	int		i;

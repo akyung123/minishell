@@ -6,32 +6,29 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 15:27:34 by akkim             #+#    #+#             */
-/*   Updated: 2026/04/27 07:27:21 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 16:05:40 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+#include "quote.h"
 
-char	*ft_strstr(const char *haystack, const char *needle)
+char	*find_unquoted_pipe(char *line)
 {
-	int	h;
-	int	n;
+	int	i;
+	int	st;
 
-	if (needle[0] == '\0')
-		return ((char *)haystack);
-	h = 0;
-	while (haystack[h] != '\0')
+	i = -1;
+	st = 0;
+	while (line[++i])
 	{
-		n = 0;
-		while (haystack[h + n] == needle[n] && haystack[h + n] != '\0')
-		{
-			n++;
-			if (needle[n] == '\0')
-				return ((char *)&haystack[h]);
-		}
-		h++;
+		if (line[i] == '\\' && line[i + 1] && st != 1 && ++i)
+			continue ;
+		update_quote_state(line[i], &st);
+		if (st == 0 && line[i] == '|')
+			return (&line[i]);
 	}
-	return (0);
+	return (NULL);
 }
 
 char	*minishell_strrchr(const char *str, int ch)

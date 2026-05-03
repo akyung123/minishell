@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:02:56 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 15:10:13 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:53:16 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,32 +71,28 @@ int	open_file_red(t_info_env *env, t_redirect *redirect)
 	return (fd);
 }
 
-void	setting_command(t_info_env *env, t_pipex *pipex,
-			t_simple_command *simple_command)
+int	setting_command(t_info_env *env, t_pipex *pipex, t_simple_command *cmd)
 {
 	t_redirect	*tmp;
+	int			fd;
 
-	tmp = simple_command->red;
+	tmp = cmd->red;
 	while (tmp)
 	{
-		if (tmp && tmp->type && (!ft_strcmp(tmp->type, "<<")
+		fd = open_file_red(env, tmp);
+		if (fd == -1)
+		{
+			perror(tmp->filename);
+			return (0);
+		}
+		if (tmp->type && (!ft_strcmp(tmp->type, "<<")
 				|| !ft_strcmp(tmp->type, "<")))
-		{
-			pipex->in = open_file_red(env, tmp);
-			if (pipex->in == -1)
-				perror(tmp->filename);
-		}
+			pipex->in = fd;
 		else
-		{
-			pipex->out = open_file_red(env, tmp);
-			if (pipex->out == -1)
-			{
-				perror(tmp->filename);
-				exit(1);
-			}
-		}
+			pipex->out = fd;
 		tmp = tmp->next;
 	}
+	return (1);
 }
 
 int	exec_single_builtin(t_info_env *env, t_pipeline *pl, t_pipex *px)

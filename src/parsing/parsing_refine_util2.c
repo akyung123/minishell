@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:36:45 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 14:39:33 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:46:15 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int	handle_dollar(char **res, char *str, t_info_env *env, int st)
 		append_expanded_val(res, get_env_val_all(env, name), env, st);
 		return (free(name), len);
 	}
+	if (str[1] == '\"' && st == 0)
+		return (1);
 	*res = append_char(*res, '$');
 	return (1);
 }

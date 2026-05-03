@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 18:00:44 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 15:17:14 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 16:05:13 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct l_command_line
 
 // util
 char				*minishell_strrchr(const char *str, int ch);
-char				*ft_strstr(const char *haystack, const char *needle);
+char				*find_unquoted_pipe(char *line);
 
 t_command_line		*parsing_command_line(t_info_env *env, char **line);
 t_pipeline			*parsing_pipeline(t_info_env *env, char *line);

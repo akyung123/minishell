@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 17:13:05 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 15:04:24 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 15:53:35 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ typedef struct l_pipex
 
 // setting function
 void	set_process(t_pipex *pipex);
-void	setting_command(t_info_env *env, t_pipex *pipex,
-			t_simple_command *simple_command);
+int	setting_command(t_info_env *env, t_pipex *pipex, t_simple_command *cmd);
 
 pid_t	run_process(t_info_env *env, t_pipex *piepx,
 			t_simple_command *simple_command);

@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 07:52:11 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 15:10:00 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 16:43:27 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static int	parse_pipeline_cmd(t_info_env *env, t_pipeline *pipeline)
 	t_simple_command	*new;
 	t_simple_command	*tmp;
 
-	refine_line(&(pipeline->simple_command->line), env);
 	new = parsing_simple_command(env, pipeline->simple_command->line);
 	if (!new)
 		return (0);

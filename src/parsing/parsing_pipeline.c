@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:57:54 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 11:51:07 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 16:04:14 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_pipeline	*parsing_pipeline(t_info_env *env, char *line)
 	if (!pipeline)
 		return (NULL);
 	pipeline->next = 0;
-	p_op = ft_strchr(line, '|');
+	p_op = find_unquoted_pipe(line);
 	pipeline->simple_command = ft_calloc(1, sizeof(t_simple_command));
 	if (p_op != NULL)
 	{

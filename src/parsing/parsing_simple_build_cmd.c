@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 02:53:27 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 15:12:20 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 16:33:11 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	handle_argument(t_simple_command *cmd,
 {
 	char	**split_words;
 	int		k;
+	int		is_empty_before;
 
 	refine_line(&tokens[i[0]], env);
 	split_words = ft_split(tokens[i[0]], '\x1F');
@@ -64,8 +65,11 @@ void	handle_argument(t_simple_command *cmd,
 	k = 0;
 	while (split_words && split_words[k])
 	{
+		is_empty_before = (split_words[k][0] == '\0');
 		remove_quotes_only(&split_words[k]);
-		add_expanded_args(cmd, split_words[k++], &i[1]);
+		if (!is_empty_before)
+			add_expanded_args(cmd, split_words[k], &i[1]);
+		k++;
 	}
 	free_split(split_words);
 }
