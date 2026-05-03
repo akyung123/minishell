@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 07:49:00 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 19:03:07 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 19:32:39 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ static void	resolve_cmd_path(t_pipex *pipex, t_simple_command *simple)
 void	run_cmd(t_info_env *env, t_pipex *pipex,
 	t_simple_command *simple)
 {
-
 	if (is_builtin(simple->cmd))
 	{
 		builtin_handler(env, simple);

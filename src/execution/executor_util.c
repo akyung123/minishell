@@ -6,42 +6,44 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 07:52:11 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 19:24:14 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 19:38:03 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "quote.h"
 
+static int	handle_setting_fail(t_pipex *pipex)
+{
+	if (pipex->in > 2)
+		close(pipex->in);
+	if (pipex->out > 2)
+		close(pipex->out);
+	if (pipex->fd[1] > 2)
+		close(pipex->fd[1]);
+	pipex->in = pipex->fd[0];
+	return (-1);
+}
+
 // simpel_command 실행 함수
 int	executor_simple_command(t_info_env *env,
-	t_simple_command *simple_command, t_pipex *pipex)
+	t_simple_command *cmd, t_pipex *pipex)
 {
-	int		pid;
+	int	pid;
 
-	if (!simple_command)
+	if (!cmd)
 	{
 		env->exit_code = 0;
 		return (-1);
 	}
-	if (!setting_command(env, pipex, simple_command))
-	{
-		if (pipex->in > 2)
-			close(pipex->in);
-		if (pipex->out > 2)
-			close(pipex->out);
-		if (pipex->fd[1] > 2)
-			close(pipex->fd[1]);
-		pipex->in = pipex->fd[0];
-		return (-1);
-	}
-	if (!simple_command->cmd || !simple_command->args ||
-		!simple_command->args[0])
+	if (!setting_command(env, pipex, cmd))
+		return (handle_setting_fail(pipex));
+	if (!cmd->cmd || !cmd->args || !cmd->args[0])
 	{
 		env->exit_code = 0;
 		return (-1);
 	}
-	pid = run_process(env, pipex, simple_command);
+	pid = run_process(env, pipex, cmd);
 	pipex->pids[pipex->count] = pid;
 	pipex->count++;
 	return (pid);

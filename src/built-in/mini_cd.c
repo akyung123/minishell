@@ -6,7 +6,7 @@
 /*   By: akkim <akkim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 15:49:39 by akkim             #+#    #+#             */
-/*   Updated: 2026/05/03 17:31:47 by akkim            ###   ########.fr       */
+/*   Updated: 2026/05/03 19:32:26 by akkim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,7 @@ static void	update_pwd(t_info_env *env)
 void	mini_cd(t_info_env *env, char *path)
 {
 	char	*target_path;
-	// char	*home_path;
 
-	// home_path = get_env_value(env, "HOME");
 	target_path = resolve_target_path(env, path);
 	if (!target_path)
 		return ;
